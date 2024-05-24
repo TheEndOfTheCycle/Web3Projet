@@ -1,6 +1,5 @@
 <?php
-require_once "../config.php" ;
-require_once $GLOBALS['TEMPLATE_DIR'] . "Template.css";
+require_once __DIR__ . "/../autoloader.php" ;//
 use Template ;
 ?>
 
