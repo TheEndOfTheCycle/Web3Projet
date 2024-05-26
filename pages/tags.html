@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineCollection</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="../images/logo2.png">
+    <script src="../script/main.js"></script>
+</head>
+
+<body>
+    <header>
+        <div id="header">
+            <div class="container">
+                <nav>
+                    <div href="#logo" id="logo"><span id="first-letter">C</span>ine<span
+                            id="first-letter">C</span>ollection
+                    </div>
+                    <ul id="sidemenu">
+                        <li><a href="../index.html">Accueil</a></li>
+                        <li><a href="about">Films</a></li>
+                        <li><a href="acteurs.html">Acteurs</a></li>
+                        <li><a href="realisateurs.html">Réalisateurs</a></li>
+                        <li><a href="tags.html">Tags</a></li>
+                        <li><a href="logging.html">Connexion Admin</a></li>
+                        <li id="search-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-search" viewBox="0 0 16 16" onclick="toggleSearch()"0>
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg></li>
+                        <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+                    </ul>
+                    <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+                </nav>
+                <form class="search-form">
+                    <div class="searche-bar">
+                        <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            </svg>
+                        </span>
+                        <input type="text" id="search-input" placeholder="Rechercher...">
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                        class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                </form>
+
+            </div>
+        </div>
+    </header>
+
+    <div class="container-tags">
+        <h1>Categories</h1>
+        <h3>Genres</h3>
+        <div class="categories">
+            <div class="cat2">
+                Comedie
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+            <div class="cat2">
+                Horreur
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="copyright">
+            <p>Copyright <i class="fa-regular fa-copyright"></i> Boualili Youcef.</p>
+        </div>
+    </footer>
+
+    <script>
+        let tablinks = document.querySelectorAll(".tab-links");
+        let tabcontents = document.querySelectorAll(".tab-contents");
+        function opentab(tabname) {
+            for (tablink of tablinks) {
+                tablink.classList.remove("active-link")
+            }
+            for (tabcontent of tabcontents) {
+                tabcontent.classList.remove("active-tab")
+            }
+            event.currentTarget.classList.add("active-link")
+            document.getElementById(tabname).classList.add("active-tab")
+        }
+
+        let sidemenu = document.getElementById("sidemenu")
+        function openmenu() {
+            sidemenu.style.right = "0";
+        }
+        function closemenu() {
+            sidemenu.style.right = "-200px";
+        }
+    </script>
+
+
+</body>
+
+</html>
