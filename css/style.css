@@ -148,7 +148,7 @@ nav ul li a:hover::after{
 }
 
 
-/* ---------- about -----------------*/
+/* ---------- help -----------------*/
 
 .help{
     padding:80px 0;
@@ -166,20 +166,20 @@ nav ul li a:hover::after{
     margin-right: 10%;
 }
 
-.about-col-1{
+.help-col-1{
     display:flex;
     justify-content: center;
     align-items: center;
     flex-basis: 35% ;
 }
 
-.about-col-1 img{
+.help-col-1 img{
     width: 100%;
     margin-top: 0;
     border-radius: 15px;
 }
 
-.about-col-2{
+.help-col-2{
     flex-basis: 50%;
     display: flex;
     flex-direction: column;
@@ -192,7 +192,7 @@ nav ul li a:hover::after{
     color:#fff;
 }
 
-.about-col-2 p {
+.help-col-2 p {
     font-size: 30px;
 }
 
@@ -266,9 +266,99 @@ nav ul li a:hover::after{
 
 }
 
-/*--------------------------- tags ---------------------------*/
+/*--------------------------- films ---------------------------*/
 
 
+.container-films    {
+    margin-left: 7%;
+    margin-top: 2%;
+    color:#fff;
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+    margin-bottom: 20%;
+}
+
+.container-films h1{
+    font-size: 60px;
+    font-weight:bolder;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.container-films h4{
+    font-size: 20px;
+    font-family: sans-serif;
+    margin-bottom: 5%;
+}
+
+.film-categorie{
+    display: flex;
+    flex-direction: column;
+}
+
+.film-categorie-name{
+    font-size: 20px;
+    margin-bottom: 1%;
+}
+
+.carousel-container {
+    display: flex;
+    align-items: center;
+    margin-left: -30px;
+    margin-right: 30px;
+
+}
+
+.films{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 3em;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+.films::-webkit-scrollbar {
+    display: none; 
+}
+
+.film-min{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+}
+
+.film-min img{
+    width: 275px;
+}
+
+.film-min {
+    margin-right: 10px;
+}
+
+.carousel-arrow {
+    margin-top: -80px;
+    display: flex;
+    color:#ff000d;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1; 
+}
+
+.left-arrow {
+    order: -1; 
+}
+
+.right-arrow {
+    order: 1; 
+}
+
+.arrow-hidden {
+    visibility: hidden;
+}
 
 
 /*--------------------------- tags ---------------------------*/
