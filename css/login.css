@@ -28,7 +28,6 @@
     flex-direction: column;
     align-items: center;
     padding: 2em;
-    gap: 5px;
     width: 400px;
 }
 
@@ -36,22 +35,6 @@ legend{
     margin-top: 10%;
     margin-right: 4em;
     margin-bottom: 20%;
-}
-
-
-.login-form p{
-   color: rgb(177, 173, 173);
-   margin-left: 5px;
-}
-.login-form h2{
-    margin-left: 5px;
- }
-
-.formulaire form{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 250px;
 }
 
 .formulaire{
@@ -62,15 +45,49 @@ legend{
     gap: 1em;
 }
 
+.formulaire p{
+   color: rgb(177, 173, 173);
+   margin-left: 5px;
+}
+
+.formulaire h2{
+    margin-left: 5px;
+}
+
+.formulaire form{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+.input {
+    display: flex;
+    flex-direction: column;
+}
+
+.input .error {
+    color: #ff000d;
+    font-size: 12px;
+    margin: 5px 0;
+    min-height: 10px;
+
+}
+
+.input.success input{
+    border-color:green;;
+}
+.input.error input{
+    border-color:#ff000d ;
+}
+
 #email, #password{
     height: 40px;
     width: 280px;
     border-radius: 5px;
     padding: 10px;
-    border: none;
+    border: 1px solid none;
 }
 
-button {
+.subBtn {
     margin-top: 10px;
     height: 40px;
     width: 280px;
@@ -78,5 +95,7 @@ button {
     border-radius: 5px;
     color: white;
     font-weight: 600;
-    background-color:  #ff000d;
+    background-color:#ff000d;
+    cursor: pointer;
+    padding: 1em 0;
 }

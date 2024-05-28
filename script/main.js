@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let searchIcon = document.querySelector('.bi-search');
     let circle = document.querySelector('.bi-x-circle');
     let carousels = document.querySelectorAll('.carousel-container');
+    
+
+   
+
 
     if (menuIcon) {
         menuIcon.addEventListener('click', openMenu);
@@ -29,8 +33,10 @@ document.addEventListener("DOMContentLoaded", function () {
         leftArrow.addEventListener('click', () => scrollLeft(films));
         rightArrow.addEventListener('click', () => scrollRight(films));
         films.addEventListener('scroll', () => checkArrowVisibility(carousel));
-        checkArrowVisibility(carousel); 
+        checkArrowVisibility(carousel);
     });
+
+   
 
     function checkArrowVisibility(carousel) {
         let films = carousel.querySelector('.films');
@@ -93,4 +99,5 @@ document.addEventListener("DOMContentLoaded", function () {
             behavior: 'smooth'
         });
     }
+    
 });
