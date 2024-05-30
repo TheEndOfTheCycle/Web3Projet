@@ -4,58 +4,65 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 require_once "../config.php";
 require_once "../class/Autoloader.php";
 Autoloader::register();
 
-
-
+// Démarre ou restaure une session si nécessaire
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 $logger = new Logger();
-$email = null;
-$password = null;
-$response = null;
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['email']) && isset($_POST['password'])) {
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
+// Vérifie si l'utilisateur est déjà connecté
+if(isset($_SESSION['username'])) {
+    // Utilisateur connecté, affiche le lien de déconnexion
+    echo '<li><a href="../index.php">Déconnexion Admin</a></li>';
+} else {
+    // Utilisateur non connecté, affiche le formulaire de connexion
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['email']) && isset($_POST['password'])) {
+        // Traitement de la soumission du formulaire de connexion
+        $email = trim($_POST['email']);
+        $password = $_POST['password'];
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Invalid email format'
-        ]);
+        // Validation de l'adresse email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Invalid email format'
+            ]);
+            exit();
+        }
+
+        // Tentative d'authentification
+        $response = $logger->log($email, $password);
+
+        header('Content-Type: application/json');
+        if ($response['granted']) {
+            // Authentification réussie, stocke les informations de session
+            $_SESSION['username'] = $response['nick'];
+            $_SESSION['email'] = $email;
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Authentication successful',
+                'redirect' => '../pages/accueil.php'
+            ]);
+        } else {
+            // Authentification échouée, renvoie un message d'erreur
+            echo json_encode([
+                'status' => 'error',
+                'message' => $response['error'] 
+            ]);
+        }
         exit();
-    }
-
-    $response = $logger->log($email, $password);
-
-    header('Content-Type: application/json');
-    if ($response['granted']) {
-        $_SESSION['username'] = $response['nick'];
-        $_SESSION['email'] = $email;
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Authentication successful',
-            'redirect' => '../pages/accueil.php'
-        ]);
     } else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => $response['error'] 
-        ]);
+        // Affiche le formulaire de connexion
+        ob_start();
+        $logger->generateLoginForm($_SERVER['PHP_SELF']);
+        $content = ob_get_clean();
+        Template_log::render($content);
     }
-    exit();
 }
-
-ob_start();
-$logger->generateLoginForm($_SERVER['PHP_SELF']);
-$content = ob_get_clean();
-Template_log::render($content);
-
 
 ?>
