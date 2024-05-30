@@ -1,96 +1,37 @@
 <?php
 require_once "../config.php";
-
 require ".." . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . 'Autoloader.php';
 Autoloader::register();
 
+$acteurs = new Acteurs();
 
+// Récupération de tous les acteurs depuis la base de données
+$liste_acteurs = $acteurs->getAllactors();
+
+// Tri de la liste des acteurs par ordre alphabétique
+usort($liste_acteurs, function($a, $b) {
+    return strcmp($a->nom_act, $b->nom_act);
+});
+
+ob_start();
 ?>
 
-<!-- Démarre le buffering -->
-<?php ob_start() ?>
-
 <div class="main-container">
-        <div class="container-names">
-            <h1>Acteurs</h1>
-            <h3>A</h3>
-            <div class="acteurs-realisateurs">
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
 
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
+<div class="container-names">
+    <h1>Acteurs</h1>
+    <div class="acteurs-realisateurs">
+        <?php foreach ($liste_acteurs as $acteur) : ?>
+            <div class="cat1">
+                <?php if ($acteur->nom_img != null) : ?>
+                    <img src="../images/acteurs/<?= $acteur->nom_img ?>.jpg" alt="<?= $acteur->nom_act ?>">
+                <?php endif; ?>
+                <span><?= $acteur->nom_act ?></span>
             </div>
-
-            <h3>B</h3>
-            <hr class="hr-acteurs">
-            <div class="acteurs-realisateurs">
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-                <div class="cat1">
-                    <img src="../images/cillian.jpg" alt="Cillian">
-                    <span>Cillian Murphy</span>
-                </div>
-            </div>
-        </div>
+        <?php endforeach; ?>
     </div>
+</div>
+</div>
 
-
-<!-- Récupère le contenu du buffer (et le vide) -->
-<?php $content = ob_get_clean() ?>
-<!-- Utilisation du contenu bufferisé -->
-<?php Template::render($content) ?>
+<?php $content = ob_get_clean(); ?>
+<?php Template::render($content); ?>

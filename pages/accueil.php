@@ -16,7 +16,7 @@ ob_start();
     <!-- Afficher l'email de l'utilisateur si authentifié -->
     <div class="user-info">
         <p>Connecté en tant que : <?php echo htmlspecialchars($_SESSION['email']); ?></p>
-    </div>
+    </div>-
 <?php endif; ?>
 <div class="main-container">
     <div class="container">
