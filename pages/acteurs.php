@@ -19,7 +19,7 @@ ob_start();
 <div class="main-container">
 
 <div class="container-names">
-    <h1>Réalisateurs</h1>
+    <h1>Acteurs</h1>
 
     <?php 
     $current_letter = null; // Variable pour suivre la lettre actuelle
