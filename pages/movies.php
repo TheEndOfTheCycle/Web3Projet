@@ -4,7 +4,7 @@ require_once "../config.php";
 
 require ".." . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . 'Autoloader.php';
 Autoloader::register();
-
+session_start();
 
 ?>
 
@@ -25,7 +25,15 @@ Autoloader::register();
                             <li><a href="acteurs.php">Acteurs</a></li>
                             <li><a href="realisateurs.php">Réalisateurs</a></li>
                             <li><a href="tags.php">Tags</a></li>
-                            <li><a href="logging.php">Connexion Admin</a></li>
+                            <?php 
+                                if(isset($_SESSION['username'])) {
+                                    // Utilisateur connecté, affiche le lien de déconnexion
+                                    echo '<li><a href="logout.php">Déconnexion Admin</a></li>';
+                                } else {
+                                    // Utilisateur non connecté, affiche le lien de connexion
+                                    echo '<li><a href="logging.php">Connexion Admin</a></li>';
+                                }
+                            ?>
                             <li id="search-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" 0>
                                     <path

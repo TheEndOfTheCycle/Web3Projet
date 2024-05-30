@@ -250,9 +250,11 @@ nav ul li a:hover::after{
 }
 
 .cat1 img {
-    width: 100%;
+    width: 200px; /* Fixe la largeur des images */
+    height: 300px; /* Fixe la hauteur des images */
     border: 1px solid none; 
-    border-radius: 15px; 
+    border-radius: 15px;
+    object-fit: cover; /* Assure que l'image couvre tout l'espace en gardant son ratio */
 }
 
 .cat1 span {
