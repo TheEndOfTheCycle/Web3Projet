@@ -206,6 +206,133 @@ nav ul li a:hover::after{
     border: none; 
     margin: 20px 0; 
 }
+/*----------------------- Acteur Form ----------------------*/
+
+.container_acteur_form{
+    margin-top: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20%;
+    gap: 1.5em;
+   
+}
+
+.sub-container{
+    background-image: url("../images/movies_collage.jpg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid none;
+    color: black;
+    padding: 1em;
+    border-radius: 5px;
+    gap: 1em;
+    min-height: 400px;
+    height: 100%;
+    width: 900px;
+}
+
+.sub-container_2{
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1em;
+    border-radius: 5px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-form-acteur{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: larger;
+    font-weight: 800;
+}
+
+#acteur-form {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+#acteur-form .form-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+#acteur-form .form-control,
+#acteur-form .form-control-image {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #2e2e2e;
+    color: #fff;
+}
+
+#acteur-form .form-control-image {
+    padding: 5px;
+}
+
+#acteur-form #preview-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+#acteur-form #preview-image {
+    display: none;
+    height: 100px; 
+}
+
+#acteur-form .sub-form-acteur {
+    display: flex;
+    justify-content: space-between;
+}
+
+#acteur-form .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#acteur-form .btn.sub {
+    background-color:#ff000d;
+    color: #ffffff;
+}
+
+#acteur-form .btn.sub:hover {
+    background-color: #bd020b;
+
+}
+
+#acteur-form .btn:active {
+    transform: scale(0.98);
+}
+
+.neon {
+    text-shadow: 0 0 5px #91181e, 0 0 10px #91181e, 0 0 15px #91181e, 0 0 20px #91181e, 0 0 25px #91181e, 0 0 30px #ff000d, 0 0 35px #ff000d;
+}
 
 /*--------------------------- acteurs / realisateurs -----------------------*/
 .container-names{

@@ -57,7 +57,7 @@ use pdo_wrapper\PdoWrapper;
 
    public function getNumFilm($nomFilm)
     {
-        $req="select * from films where titre_film=:nomfilm ";
+        $req="select * from Films where titre_film=:nomfilm ";
         $para =["nomfilm" =>$nomFilm];
         $res=$this->exec($req,$para,"Film");
         return $res[0]->num_film;
@@ -66,7 +66,7 @@ use pdo_wrapper\PdoWrapper;
     public function getFilm($nom_film)
     {
         $num_film=$this->getNumFilm($nom_film);
-        $req="select * from films where num_film=:numF";
+        $req="select * from Films where num_film=:numF";
         $para =["numF" =>$num_film];
         $res=$this->exec($req,$para,"Film");
         return($res[0]);

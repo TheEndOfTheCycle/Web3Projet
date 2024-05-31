@@ -43,7 +43,7 @@ ob_start();
             <div class="cat1">
                 <?php if ($realisateur->nom_img != null) : ?>
                     <!-- Utiliser le chemin approprié pour l'image du réalisateur -->
-                    <img src="../images/realisateurs/<?= $realisateur->nom_real ?>.jpg" alt="<?= $realisateur->nom_real ?>">
+                    <img src="../images/realisateurs/<?= $realisateur->nom_img ?>" alt="<?= $realisateur->nom_act ?>">
                 <?php endif; ?>
                 <span><?= $realisateur->nom_real ?></span>
             </div>
