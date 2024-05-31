@@ -4,7 +4,6 @@ require ".." . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . 'Autoloader
 Autoloader::register();
 session_start();
 
-use pdo_wrapper\PdoWrapper;
 
 // Récupérer le nom du tag depuis l'URL
 $tag = isset($_GET['tag']) ? $_GET['tag'] : null;
