@@ -2,6 +2,7 @@
 
 use pdo_wrapper\PdoWrapper;
 
+
  class Film  extends PdoWrapper
 {
     public $num_film;
@@ -38,7 +39,7 @@ use pdo_wrapper\PdoWrapper;
    }
    public function getTags()
    {
-        $req="select nom_tag from films inner join film_tag on films.num_film=film_tag.num_film inner join tags on tags.num_tag=film_tag.num_tag where films.num_film=
+        $req="select nom_tag from Films inner join film_tag on Films.num_film=film_tag.num_film inner join tags on tags.num_tag=film_tag.num_tag where Films.num_film=
         ".$this->num_film;
        return $this->exec($req,null,"Tag");
    }
@@ -53,6 +54,24 @@ use pdo_wrapper\PdoWrapper;
         }
         return $Ttags;
    }
+
+   public function getNumFilm($nomFilm)
+    {
+        $req="select * from films where titre_film=:nomfilm ";
+        $para =["nomfilm" =>$nomFilm];
+        $res=$this->exec($req,$para,"Film");
+        return $res[0]->num_film;
+    }
+
+    public function getFilm($nom_film)
+    {
+        $num_film=$this->getNumFilm($nom_film);
+        $req="select * from films where num_film=:numF";
+        $para =["numF" =>$num_film];
+        $res=$this->exec($req,$para,"Film");
+        return($res[0]);
+    }
+
    public function getHtml()
    {
     ?>
@@ -63,8 +82,8 @@ use pdo_wrapper\PdoWrapper;
                         <span><?php
                         ?></span>
                     </div>
-                    </div>
-                    </div>
+                </div>
+            </div>
 
 
     <?php

@@ -9,7 +9,7 @@ class Films extends PdoWrapper
     public function getAllFilms()
     {
         return( $this->exec(
-            "SELECT * FROM films ",
+            "SELECT * FROM Films ",
             null,
             'Film'));
     }

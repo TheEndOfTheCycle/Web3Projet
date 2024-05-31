@@ -29,7 +29,7 @@ if ($tag) {
         <div class="films-tag">
             <?php if (!empty($filteredFilms)): ?>
                 <?php foreach ($filteredFilms as $film): ?>
-                    <a href="movies.php" class="film-min">
+                    <a href="movies.php?nom_film=<?= urlencode($film->titre_film) ?>" class="film-min">
                         <div class="image-container">
                             <img src="../images/affiches/<?php echo htmlspecialchars($film->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>.jpg" alt="<?php echo htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-eye seen-icon hidden" viewBox="0 0 16 16">

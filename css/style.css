@@ -492,7 +492,6 @@ nav ul li a:hover::after{
 
 /*---------------- movies -----------*/
 .background {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url("../images/oppenheimer.png");
     background-position:top;
     background-size: 100%;
     background-repeat: no-repeat;
