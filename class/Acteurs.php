@@ -1,11 +1,13 @@
 <?php
+require_once "../config.php";
+
 use pdo_wrapper\PdoWrapper;
 
 class Acteurs extends PdoWrapper
 {
     public $actors = [];
 
-    public function getAllactors()
+    public function getAllActors()
     {
         return $this->exec("SELECT * FROM acteur", null, 'Acteur');
     }
@@ -18,24 +20,32 @@ class Acteurs extends PdoWrapper
         return $res[0]->num_act;
     }
 
-    public function add_actor_to_db($nomAct,$ImgAct) //plusieurs_films nous renseigne sur le fait que FilmJoue(contient les num_film) est un tableau ou pas
+    public function add_actor_to_db($nomAct, $ImgAct)
     {
-                    //on va inserer le nom,le numero et le nom de l image dans le tableau acteur
-                    $req="insert into acteur (nom_act,nom_img) values (:nom_act,:nom_img)";
-                    $para=["nom_act" =>$nomAct ,"nom_img" =>$ImgAct];
-                    $this->exec($req,$para);
-                    //on va inserer le numero et les films joue par l acteur(on verifie si y en a plusieurs ou pas) dans la bde(c a d dans jouer)
-                    
+        // on va inserer le nom, le numero et le nom de l'image dans le tableau acteur
+        $req = "INSERT INTO acteur (nom_act, nom_img) VALUES (:nom_act, :nom_img)";
+        $para = ["nom_act" => $nomAct, "nom_img" => $ImgAct];
+        $this->exec($req, $para);
+
+        // Ajouter l'acteur au fichier CSV
+        $this->add_actor_to_csv($nomAct, $ImgAct);
     }
 
     public function remove_actor_from_db($nom_act)
     {
         $num_act = $this->getNumAct($nom_act);
         $para = ["numA" => $num_act];
+
+        // Effacer les rôles de l'acteur
         $req = "DELETE FROM jouer WHERE num_act=:numA";
         $this->exec($req, $para);
+
+        // Effacer l'acteur de la table acteur
         $req = "DELETE FROM acteur WHERE num_act=:numA";
         $this->exec($req, $para);
+
+        // Supprimer l'acteur du fichier CSV
+        $this->remove_actor_from_csv($nom_act);
     }
 
     public function add_role($num_act, $num_film)
@@ -51,4 +61,44 @@ class Acteurs extends PdoWrapper
         $para = ["numF" => $numFilm, "numA" => $numAct];
         $this->exec($req, $para);
     }
+
+    private function add_actor_to_csv($nom_act, $nom_img)
+    {
+        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
+        $newId = $this->getNumAct($nom_act);
+
+        // Write to CSV file
+        $fileHandle = fopen($csvFile, 'a');
+        if ($fileHandle !== false) {
+            $line = [$newId, $nom_act, $nom_img];
+            fputcsv($fileHandle, $line);
+            fclose($fileHandle);
+        } else {
+            echo "Erreur lors de l'ouverture du fichier CSV.";
+        }
+    }
+
+    private function remove_actor_from_csv($nom_act)
+    {
+        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
+        $tempFile = tempnam(sys_get_temp_dir(), 'csv');
+
+        if (file_exists($csvFile)) {
+            if (($inputFile = fopen($csvFile, 'r')) !== false) {
+                if (($outputFile = fopen($tempFile, 'w')) !== false) {
+                    while (($data = fgetcsv($inputFile, 1000, ',')) !== false) {
+                        // Check if the current row does not contain the actor to be deleted
+                        if ($data[1] !== $nom_act) {
+                            fputcsv($outputFile, $data);
+                        }
+                    }
+                    fclose($outputFile);
+                }
+                fclose($inputFile);
+            }
+            // Replace the original file with the updated file
+            rename($tempFile, $csvFile);
+        }
+    }
 }
+

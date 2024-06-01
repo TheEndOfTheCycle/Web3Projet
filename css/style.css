@@ -22,7 +22,6 @@ body {
 #header {
     width: 100%;
     height: 100px;
-    background-image: url(images/Background.jpg);
     background-size: cover;
     background-position: center;
 }
