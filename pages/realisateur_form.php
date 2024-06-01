@@ -8,7 +8,8 @@ $gf = new RealisateurForm();
 // Démarre le buffering
 ob_start();
 
-if (empty($_POST['name'])) {
+// Vérifier si le nom et l'image ne sont pas vides
+if (empty($_POST['name']) || (empty($_FILES['image']['name']) && empty($_FILES['image']['tmp_name']))) {
     $gf->generateForm();
 } else {
     $imgFile = isset($_FILES['image']) ? $_FILES['image'] : null;

@@ -67,37 +67,37 @@ CREATE Table film_tag(
 
 );
 
-LOAD DATA LOCAL INFILE '/home/youcef/Bureau/WEB/moi/csv/acteur.csv'
+LOAD DATA LOCAL INFILE 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/acteur.csv'
 INTO TABLE acteur
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
-LOAD DATA LOCAL  INFILE '/home/youcef/Bureau/WEB/moi/csv/realisateur.csv'
+LOAD DATA LOCAL  INFILE 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/realisateur.csv'
 INTO TABLE realisateur
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
-LOAD DATA LOCAL INFILE '/home/youcef/Bureau/WEB/moi/csv/film.csv'
+LOAD DATA LOCAL INFILE 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/film.csv'
 INTO TABLE Films
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
-LOAD DATA LOCAL INFILE '/home/youcef/Bureau/WEB/moi/csv/jouer.csv'
+LOAD DATA LOCAL INFILE 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/jouer.csv'
 INTO TABLE jouer
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
-LOAD DATA LOCAL INFILE '/home/youcef/Bureau/WEB/moi/csv/tags.csv'
+LOAD DATA LOCAL INFILE 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/tags.csv'
 INTO TABLE tags
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS;
-LOAD DATA LOCAL INFILE '/home/youcef/Bureau/WEB/moi/csv/films_tag.csv'
+LOAD DATA LOCAL INFILE 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/films_tag.csv'
 INTO TABLE film_tag
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
