@@ -53,6 +53,38 @@ class Trie extends PdoWrapper
         return $this->exec($req, $params, "Film");
     }
 
+    public function searchMovies($searchTerm)
+    {
+        $Otags = new Tags();
+        $Bacteurs = new Acteurs();
+        $Breals = new Realisateurs();
+
+        $numTag = $Otags->getNumTag($searchTerm);
+        $numAct = $Bacteurs->getNumAct($searchTerm);
+        $numReal = $Breals->getNumReal($searchTerm);
+
+        $query = "SELECT DISTINCT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+              FROM Films
+              LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
+              LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
+              LEFT JOIN jouer ON jouer.num_film = Films.num_film
+              LEFT JOIN acteur ON acteur.num_act = jouer.num_act
+              LEFT JOIN realisateur ON realisateur.num_real = Films.num_real
+              WHERE Films.titre_film LIKE :searchTerm
+                 OR tags.num_tag = :numTag
+                 OR acteur.num_act = :numAct
+                 OR realisateur.num_real = :numReal";
+
+        $params = array(
+            ':searchTerm' => '%' . $searchTerm . '%',
+            ':numTag' => $numTag,
+            ':numAct' => $numAct,
+            ':numReal' => $numReal
+        );
+
+        return $this->exec($query, $params, "Film");
+    }
+
     public function getMoviesByTagsNames($Tnametags)//cette fonction retourne les Films qui ont les tags contenu dans Ttags
     {
         $tempo = [];

@@ -9,4 +9,3 @@ use pdo_wrapper\PdoWrapper;
     }
 
 
-?>
