@@ -31,7 +31,7 @@ use pdo_wrapper\PdoWrapper;
             $res = $this->exec($req,null,"Tag");
             foreach($res as $tag)//on parcourt tous les objets de classes tag
             {
-                if($tag->nom_tag==$nomTag)
+                if(strtolower($tag->nom_tag)==strtolower($nomTag))
                 {
                     //var_dump($tag);
                     return $tag->num_tag;
@@ -45,4 +45,3 @@ use pdo_wrapper\PdoWrapper;
 
 
 
-?>

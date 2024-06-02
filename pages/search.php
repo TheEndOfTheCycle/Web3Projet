@@ -6,13 +6,19 @@ Autoloader::register();
 
 // Vérifier si le terme de recherche est présent dans les paramètres GET
 if (isset($_GET['query'])) {
-    $query = $_GET['query'];
+    $query = trim($_GET['query']);
 
     // Créer une instance de la classe Trie
     $trie = new Trie();
 
     // Effectuer la recherche en utilisant la méthode appropriée de la classe Trie
-    $results = $trie->getMoviesByTagName($query);
+    $resultsByTag = $trie->getMoviesByTagName($query);
+    $resultsByActor = $trie->getMoviesByActorName($query);
+    $resultsByReal = $trie->getMoviesByReal($query);
+    $resultsByTitle = $trie->getMoviesByTitle($query);
+
+    $results = array_merge($resultsByTag, $resultsByActor, $resultsByReal, $resultsByTitle);
+    //$results = array_unique($results);
 
     // Convertir les résultats en un tableau associatif approprié pour le JSON
     $jsonResults = array();
@@ -24,6 +30,7 @@ if (isset($_GET['query'])) {
             'genre_film' => $result->genre_film,
         );
     }
+    
 
     // Renvoyer les résultats au format JSON
     echo json_encode($jsonResults);

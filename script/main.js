@@ -72,9 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeSearch() {
     let searchForm = document.querySelector(".search-form");
     let computedStyle = window.getComputedStyle(searchForm);
+    let searchInput = document.getElementById("search-input");
+    let searchResult = document.getElementById("search-results");
+
 
     if (computedStyle.display === "flex") {
       searchForm.style.display = "none";
+      searchInput.value = "";
+      searchResult.innerHTML = "";
     }
   }
 
@@ -92,82 +97,72 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Capture de l'événement de soumission du formulaire de recherche
   let searchForm = document.querySelector(".search-form");
   searchForm.addEventListener("submit", function (event) {
     event.preventDefault(); // Empêcher le comportement par défaut du formulaire
     let searchInput = document.getElementById("search-input").value;
-    performSearch(searchInput);
+    searchFilms(searchInput);
   });
+  
+    // Fonction de recherche de films
+    function searchFilms(searchInput) {
+        // Construction de l'URL de recherche
+        let url = "search.php";
+        let params = "?query=" + encodeURIComponent(searchInput);
+        let request = url + params;
 
-  // Fonction pour effectuer la recherche
-  function performSearch(query) {
-    // Effectuer une requête AJAX pour envoyer le terme de recherche à search.php
-    fetch("search.php?query=" + encodeURIComponent(query))
-      .then((response) => {
-        // Vérifier si la requête a réussi
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        // Convertir la réponse en JSON
-
-        return response.json();
-      })
-      .then((data) => {
-        // Vérifier s'il y a une erreur dans la réponse
-        if (data.error) {
-          console.error("Error:", data.error);
-          displaySearchResults([]); // Afficher un message "Aucun résultat trouvé"
-        } else {
-          // Afficher les résultats dans la page
-          console.log(data);
-
-          displaySearchResults(data);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-
-  // Fonction pour afficher les résultats de la recherche
-  function displaySearchResults(results) {
-    // Sélectionner le conteneur où les résultats seront affichés
-    let searchResultsContainer = document.getElementById("search-results");
-
-    // Effacer les résultats précédents
-    searchResultsContainer.innerHTML = "";
-
-    // Vérifier s'il y a des résultats
-    if (results.length > 0) {
-      // Parcourir les résultats et les afficher dans la page
-      results.forEach((result) => {
-        let subContainer = document.createElement("div");
-        let resultItem = document.createElement("div");
-        let imgResult = document.createElement("img");
-        subContainer.classList.add("sub-container-row");
-        resultItem.innerHTML =
-          "<div class= sub-container-movie-info>" +
-          "<div>" +
-          result.titre_film +
-          "</div> <div>" +
-          result.anSortie_film +
-          "</div> <div>" +
-          result.genre_film +
-          "</div> </div>";
-        imgResult.src = "../images/affiches/" + result.img_film;
-        console.log(resultItem);
-        subContainer.appendChild(imgResult);
-        subContainer.appendChild(resultItem);
-
-        searchResultsContainer.appendChild(subContainer);
-      });
-    } else {
-      // Aucun résultat trouvé
-      let noResultsMessage = document.createElement("div");
-      noResultsMessage.textContent = "Aucun résultat trouvé.";
-      searchResultsContainer.appendChild(noResultsMessage);
+        // Requête fetch
+        fetch(request)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Network response was not ok");
+                }
+            })
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     }
-    searchResultsContainer.classList.add("visible");
-  }
+
+    // Fonction pour afficher les résultats de la recherche
+    function displaySearchResults(results) {
+        let searchResultsContainer = document.getElementById("search-results");
+        searchResultsContainer.innerHTML = "";
+
+        if (results.length > 0) {
+            results.forEach(result => {
+                let subContainer = document.createElement("div");
+                subContainer.classList.add("sub-container-row");
+                let resultItem = document.createElement("div");
+                resultItem.classList.add("sub-container-movie-info");
+                resultItem.innerHTML =
+                    "<div>" +
+                    result.titre_film +
+                    "</div> <div>" +
+                    result.anSortie_film +
+                    "</div> <div>" +
+                    result.genre_film +
+                    "</div>";
+                let imgResult = document.createElement("img");
+                imgResult.src = "../images/affiches/" + result.img_film;
+
+                subContainer.appendChild(imgResult);
+                subContainer.appendChild(resultItem);
+                searchResultsContainer.appendChild(subContainer);
+            });
+        } else {
+            let noResultsMessage = document.createElement("div");
+            noResultsMessage.textContent = "Aucun résultat trouvé.";
+            searchResultsContainer.appendChild(noResultsMessage);
+        }
+        searchResultsContainer.classList.add("visible");
+    }
+
+   
+
+
 });
