@@ -191,6 +191,8 @@ nav ul li a:hover::after{
     align-items: center;
     padding-left: 1em;
     padding-top: 10px;
+    text-decoration: none;
+    color: white;
 
     gap: 3em;
     border-bottom: 2px solid white;
@@ -321,11 +323,10 @@ nav ul li a:hover::after{
     align-items: center;
     border: 1px solid none;
     color: black;
-    padding: 1em;
     border-radius: 5px;
     gap: 1em;
     min-height: 400px;
-    height: 75vh;
+    height: 100%;
     width: 900px;
 }
 
@@ -335,8 +336,8 @@ nav ul li a:hover::after{
     padding: 1em;
     border-radius: 5px;
     height: 100%;
-    margin-top: 10%;
-    margin-bottom: 10%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 
     display: flex;
     justify-content: center;
@@ -444,6 +445,7 @@ nav ul li a:hover::after{
 }
 
 
+
 /*--------------------------- acteurs / realisateurs -----------------------*/
 .container-names{
     margin-left: 7%;
@@ -507,6 +509,23 @@ nav ul li a:hover::after{
     border: none; 
     margin-bottom: 10px;
 
+}
+.container-add-acteur{
+    display: flex;
+    justify-content: space-between;
+}
+
+.container-add-acteur a{
+    text-decoration: none;
+    color: white;
+    margin-right: 7%;
+    transition: background-color 0.5s, color 0.5s;
+
+}
+
+.container-add-acteur a:hover{
+    color: #ff000d;
+    transform: scale(1.2) ;
 }
 
 /*--------------------------- films ---------------------------*/

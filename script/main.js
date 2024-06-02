@@ -98,69 +98,76 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   let searchForm = document.querySelector(".search-form");
-  searchForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Empêcher le comportement par défaut du formulaire
-    let searchInput = document.getElementById("search-input").value;
-    searchFilms(searchInput);
-  });
-  
-    // Fonction de recherche de films
-    function searchFilms(searchInput) {
-        // Construction de l'URL de recherche
-        let url = "search.php";
-        let params = "?query=" + encodeURIComponent(searchInput);
-        let request = url + params;
+let searchInput = document.getElementById("search-input");
 
-        // Requête fetch
-        fetch(request)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Network response was not ok");
-                }
-            })
-            .then(data => {
-                displaySearchResults(data);
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
+
+let Timer;
+let Delay = 300; 
+
+searchInput.addEventListener("input", function () {
+    clearTimeout(Timer);
+    Timer = setTimeout(function () {
+        searchFilms(searchInput.value);
+    }, Delay);
+});
+
+// Fonction de recherche de films
+function searchFilms(searchInput) {
+    // Construction de l'URL de recherche
+    let url = "search.php";
+    let params = "?query=" + encodeURIComponent(searchInput);
+    let request = url + params;
+
+    // Requête fetch
+    fetch(request)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Network response was not ok");
+            }
+        })
+        .then(data => {
+            displaySearchResults(data);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
+// Fonction pour afficher les résultats de la recherche
+function displaySearchResults(results) {
+    let searchResultsContainer = document.getElementById("search-results");
+    searchResultsContainer.innerHTML = "";
+
+    if (results.length > 0) {
+        results.forEach(result => {
+            let subContainer = document.createElement("a");
+            subContainer.classList.add("sub-container-row");
+            subContainer.href = "movies.php?nom_film=" + encodeURIComponent(result.titre_film);            let resultItem = document.createElement("div");
+            resultItem.classList.add("sub-container-movie-info");
+            resultItem.innerHTML =
+                "<div>" +
+                result.titre_film +
+                "</div> <div>" +
+                result.anSortie_film +
+                "</div> <div>" +
+                result.genre_film +
+                "</div>";
+            let imgResult = document.createElement("img");
+            imgResult.src = "../images/affiches/" + result.img_film;
+
+            subContainer.appendChild(imgResult);
+            subContainer.appendChild(resultItem);
+            searchResultsContainer.appendChild(subContainer);
+        });
+    } else {
+        let noResultsMessage = document.createElement("div");
+        noResultsMessage.textContent = "Aucun résultat trouvé.";
+        searchResultsContainer.appendChild(noResultsMessage);
     }
-
-    // Fonction pour afficher les résultats de la recherche
-    function displaySearchResults(results) {
-        let searchResultsContainer = document.getElementById("search-results");
-        searchResultsContainer.innerHTML = "";
-
-        if (results.length > 0) {
-            results.forEach(result => {
-                let subContainer = document.createElement("div");
-                subContainer.classList.add("sub-container-row");
-                let resultItem = document.createElement("div");
-                resultItem.classList.add("sub-container-movie-info");
-                resultItem.innerHTML =
-                    "<div>" +
-                    result.titre_film +
-                    "</div> <div>" +
-                    result.anSortie_film +
-                    "</div> <div>" +
-                    result.genre_film +
-                    "</div>";
-                let imgResult = document.createElement("img");
-                imgResult.src = "../images/affiches/" + result.img_film;
-
-                subContainer.appendChild(imgResult);
-                subContainer.appendChild(resultItem);
-                searchResultsContainer.appendChild(subContainer);
-            });
-        } else {
-            let noResultsMessage = document.createElement("div");
-            noResultsMessage.textContent = "Aucun résultat trouvé.";
-            searchResultsContainer.appendChild(noResultsMessage);
-        }
-        searchResultsContainer.classList.add("visible");
-    }
+    searchResultsContainer.classList.add("visible");
+}
 
    
 

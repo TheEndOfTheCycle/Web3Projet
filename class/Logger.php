@@ -14,7 +14,7 @@ class Logger
                         <h2>Bienvenue</h2>
                         <p>Entrer vos identifiants.</p>
                         <div id="ajax-response"></div>
-                        <form action="<?php echo htmlspecialchars($action); ?>" method="POST" id="log-form">
+                        <form action="../pages/logging.php" method="POST" id="log-form">
                             <div class="input">
                                 <input type="text" id="email" name="email" placeholder="email">
                                 <div class="error"></div>

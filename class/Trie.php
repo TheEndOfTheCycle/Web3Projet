@@ -7,35 +7,36 @@ class Trie extends PdoWrapper
 {
     public function getMoviesByTagName($nomTag)
     {
-        $Otags = new Tags();
-        $NumTag = $Otags->getNumTag($nomTag);
-        $req = "SELECT * FROM Films 
-                    INNER JOIN film_tag ON Films.num_film = film_tag.num_film 
-                    INNER JOIN tags ON tags.num_tag = film_tag.num_tag 
-                    WHERE tags.num_tag = :numTag";
-        $params = array(':numTag' => $NumTag);
+        $req = "SELECT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche 
+            FROM Films 
+            INNER JOIN film_tag ON Films.num_film = film_tag.num_film 
+            INNER JOIN tags ON tags.num_tag = film_tag.num_tag 
+            WHERE tags.nom_tag LIKE :nomTag";
+        $params = array(':nomTag' => '%' . $nomTag . '%');
         $res = $this->exec($req, $params, "Film");
         return $res;
     }
 
-    public function getMoviesByActorName($nomAct)//cette foction retourne les Films que l acteur a joue
+
+    public function getMoviesByActorName($nomAct)
     {
-        $Bacteurs = new Acteurs();
-        $num_act = $Bacteurs->getNumAct($nomAct);
         $req = "SELECT acteur.nom_act, Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche 
             FROM acteur  
             INNER JOIN jouer ON jouer.num_act = acteur.num_act 
             INNER JOIN Films ON Films.num_film = jouer.num_film 
-            WHERE acteur.num_act = :numAct";
-        $params = array(':numAct' => $num_act);
+            WHERE acteur.nom_act LIKE :nomAct";
+        $params = array(':nomAct' => '%' . $nomAct . '%');
         $res = $this->exec($req, $params, "Film");
         return $res;
     }
 
 
+
     public function getMoviesByTitle($title)
     {
-        $query = "SELECT * FROM Films WHERE titre_film LIKE :title";
+        $query = "SELECT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche 
+                  FROM Films 
+                  WHERE titre_film LIKE :title";
         $params = array(':title' => '%' . $title . '%');
         $result = $this->exec($query, $params, "Film");
         return $result;
@@ -43,25 +44,20 @@ class Trie extends PdoWrapper
 
     public function getMoviesByReal($nomReal)
     {
-        $Breals = new Realisateurs();
-        $num_real = $Breals->getNumReal($nomReal);
         $req = "SELECT Films.titre_film, realisateur.nom_real, Films.anSortie_film, Films.genre_film, Films.nom_affiche 
             FROM Films 
             INNER JOIN realisateur ON realisateur.num_real = Films.num_real 
-            WHERE realisateur.num_real = :numReal";
-        $params = array(':numReal' => $num_real);
+            WHERE realisateur.nom_real LIKE :nomReal";
+        $params = array(':nomReal' => '%' . $nomReal . '%');
         return $this->exec($req, $params, "Film");
     }
+
 
     public function searchMovies($searchTerm)
     {
         $Otags = new Tags();
         $Bacteurs = new Acteurs();
         $Breals = new Realisateurs();
-
-        $numTag = $Otags->getNumTag($searchTerm);
-        $numAct = $Bacteurs->getNumAct($searchTerm);
-        $numReal = $Breals->getNumReal($searchTerm);
 
         $query = "SELECT DISTINCT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche
               FROM Films
@@ -71,19 +67,16 @@ class Trie extends PdoWrapper
               LEFT JOIN acteur ON acteur.num_act = jouer.num_act
               LEFT JOIN realisateur ON realisateur.num_real = Films.num_real
               WHERE Films.titre_film LIKE :searchTerm
-                 OR tags.num_tag = :numTag
-                 OR acteur.num_act = :numAct
-                 OR realisateur.num_real = :numReal";
+                 OR tags.nom_tag LIKE :searchTerm
+                 OR acteur.nom_act LIKE :searchTerm
+                 OR realisateur.nom_real LIKE :searchTerm";
 
-        $params = array(
-            ':searchTerm' => '%' . $searchTerm . '%',
-            ':numTag' => $numTag,
-            ':numAct' => $numAct,
-            ':numReal' => $numReal
-        );
+        $params = array(':searchTerm' => '%' . $searchTerm . '%');
 
         return $this->exec($query, $params, "Film");
     }
+
+
 
     public function getMoviesByTagsNames($Tnametags)//cette fonction retourne les Films qui ont les tags contenu dans Ttags
     {

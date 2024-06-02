@@ -10,14 +10,10 @@ if (isset($_GET['query'])) {
 
     // Créer une instance de la classe Trie
     $trie = new Trie();
-
-    $resultAll= $trie->searchMovies($query);
+    if(!empty($query)){
+        $resultAll= $trie->searchMovies($query);
+    }
     
-
-    
-
-    //$results = array_unique($results);
-
     // Convertir les résultats en un tableau associatif approprié pour le JSON
     $jsonResults = array();
     foreach ($resultAll as $result) {
