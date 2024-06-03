@@ -16,6 +16,10 @@ class Realisateurs extends PdoWrapper
 
     public function add_real_to_db($nom_real, $nom_img)
     {
+
+       if($nom_img === null){
+        $nom_img = "avatare.jpg";
+       } 
         //on va inserer le numero le nom du real et de l image dans le tableau realisateur
         $req = "Insert into realisateur (nom_real, nom_img) values(:nom_real, :nom_img)";
         $para = ["nom_real" => $nom_real, "nom_img" => $nom_img];

@@ -14,14 +14,14 @@ class Films extends PdoWrapper
         );
     }
 
-    public function getAllGenres()
-    {
-        return $this->exec(
-            "SELECT genre_film FROM Films",
-            null,
-            'genre_film'
-        );
-    }
+  public function getAllGenres()
+{
+    return $this->exec(
+        "SELECT genre_film FROM Films",
+        null,
+        'genre_film'
+    );
+}
 
 
 
@@ -106,23 +106,22 @@ class Films extends PdoWrapper
         }
     }
 
-    public function add_film_to_db($titre_film, $anSortie_film, $genre, $nom_real, $nom_affiche, $synopsis)//plusieurs_tags nous permet de determiner si tags est un tableau ou pas,de plus tags doit etre une instance de classe tag
+    public function add_film_to_db($titre_film,$anSortie_film,$genre, $nom_real,$nom_affiche,$synopsis)//plusieurs_tags nous permet de determiner si tags est un tableau ou pas,de plus tags doit etre une instance de classe tag
     {
         $Breals = new Realisateurs();
-        $num_real = $Breals->getNumReal($nom_real);
-        if ($num_real === null) {
-            echo "Le realisateuer '$nom_real' n'existe pas dans la base de données. Ajouter le d'abord !";
-            return false;
-        } else {
-
-            //on va saisir les infos du film dans la table films
-            $req = "insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis)";
-            $para = ["titre_film" => $titre_film, "anSortie_film" => $anSortie_film, "genre_film" => $genre, "num_real" => $num_real, "nom_affiche" => $nom_affiche, "synopsis" => $synopsis];
-            $this->exec($req, $para);
-            return true;
+        $num_real=$Breals->getNumReal($nom_real);
+        if($num_real === null){
+           
+            $Breals->add_real_to_db($nom_real, null);
         }
+        $num_real=$Breals->getNumReal($nom_real);
 
-
+        //on va saisir les infos du film dans la table films
+        $req="insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis)";
+        $para = [ "titre_film" =>$titre_film, "anSortie_film" =>$anSortie_film ,"genre_film"=>$genre, "num_real" =>$num_real , "nom_affiche" =>$nom_affiche, "synopsis" =>$synopsis];
+        $this->exec($req,$para);
+       
+        
     }
 
 

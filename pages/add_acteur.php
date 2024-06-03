@@ -54,10 +54,10 @@ ob_start();
             ?>
             <div class="cat1">
                 <?php if ($acteur->nom_img != null): ?>
-                    <img src="../images/acteurs/<?= $acteur->nom_img ?>" alt="<?= $acteur->nom_act ?>">
+                    <img id="<?= $acteur->num_act ?>" class="img-acteur" src="../images/acteurs/<?= $acteur->nom_img ?>" alt="<?= $acteur->nom_act ?>">
                     <?php if (isset($_SESSION['username'])): ?>
                         <svg id="add-icon-<?= $acteur->num_act ?>" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                            fill="currentColor" class="bi bi-plus-circle hidden c" viewBox="0 0 16 16">
+                            fill="currentColor" class="bi bi-plus-circle-add hidden c d" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                             <path
                                 d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
@@ -69,35 +69,40 @@ ob_start();
         <?php endforeach; ?>
     </div>
 </div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.c').forEach(icon => {
-            icon.addEventListener('click', function () {
-                let actorId = this.id.replace('add-icon-', '');
-                addActor(actorId);
-            });
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.c').forEach(icon => {
+        icon.addEventListener('click', function () {
+            let actorId = this.id.replace('add-icon-', '');
+            let cat1Element = this.parentElement;
+            let img = cat1Element.querySelector('.img-acteur');
+            let svg = cat1Element.querySelector('.c');
+            addActor(actorId, img, svg);
         });
     });
+});
 
-    function addActor(actorId) {
-        let filmId = <?= json_encode($num_film) ?>;
-        fetch('add_acteur_film.php?id=' + actorId + '&num_film=' + filmId, {
-            method: 'GET'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.reload();
-            } else {
-                console.error('Erreur lors de l\'ajout de l\'acteur');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'ajout de l\'acteur :', error);
-        });
-    }
+function addActor(actorId, img, svg) {
+    let filmId = <?= json_encode($num_film) ?>;
+    fetch('add_acteur_film.php?id=' + actorId + '&num_film=' + filmId, {
+        method: 'GET'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            svg.classList.add('added-actor-svg');
+            img.classList.add('added-actor');
+        } else {
+            console.error('Erreur lors de l\'ajout de l\'acteur');
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de l\'ajout de l\'acteur :', error);
+    });
+}
 </script>
+
+
 
 <?php $content = ob_get_clean(); ?>
 <?php Template::render($content); ?>
