@@ -14,6 +14,19 @@ class Films extends PdoWrapper
         );
     }
 
+    public function getAllGenres()
+    {
+        return $this->exec(
+            "SELECT genre_film FROM Films",
+            null,
+            'genre_film'
+        );
+    }
+
+
+
+
+
     public function remove_film_from_db($nomFilm)
     {
         $film = $this->getFilm($nomFilm);
@@ -93,21 +106,24 @@ class Films extends PdoWrapper
         }
     }
 
-    public function add_film_to_db($titre, $annee, $genre, $num_realisateur, $nom_affiche, $description)
+    public function add_film_to_db($titre_film, $anSortie_film, $genre, $nom_real, $nom_affiche, $synopsis)//plusieurs_tags nous permet de determiner si tags est un tableau ou pas,de plus tags doit etre une instance de classe tag
     {
-        // Requête d'insertion pour la table "films"
-        $req = "INSERT INTO Films (titre_film, anSortie_film, genre_film, num_real, nom_affiche, synopsis) 
-                VALUES (:titre, :annee, :genre, :num_realisateur, :nom_affiche, :syno)";
-        $para = [
-            "titre" => $titre,
-            "annee" => $annee,
-            "genre" => $genre,
-            "num_realisateur" => $num_realisateur,
-            "nom_affiche" => $nom_affiche,
-            "syno" => $description,
-        ];
-        $this->exec($req, $para);
+        $Breals = new Realisateurs();
+        $num_real = $Breals->getNumReal($nom_real);
+        if ($num_real === null) {
+            echo "Le realisateuer '$nom_real' n'existe pas dans la base de données. Ajouter le d'abord !";
+            return false;
+        } else {
+
+            //on va saisir les infos du film dans la table films
+            $req = "insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis)";
+            $para = ["titre_film" => $titre_film, "anSortie_film" => $anSortie_film, "genre_film" => $genre, "num_real" => $num_real, "nom_affiche" => $nom_affiche, "synopsis" => $synopsis];
+            $this->exec($req, $para);
+            return true;
+        }
+
+
     }
-    
+
 
 }

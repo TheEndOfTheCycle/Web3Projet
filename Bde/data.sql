@@ -17,22 +17,18 @@ CREATE TABLE realisateur(
     PRIMARY KEY (num_real)
 
 );
-
- CREATE TABLE Films (
-  num_film int NOT NULL AUTO_INCREMENT,
-   titre_film varchar(255),
-   anSortie_film int,
-   genre_film varchar(255),
-   num_real int ,
-   nom_affiche varchar(255),
-    synopsis varchar(255),
-    PRIMARY KEY (num_film),
-     CONSTRAINT FOREIGN KEY (num_real) REFERENCES realisateur(num_real)
-            
-
- 
- 
+CREATE TABLE Films (
+  num_film INT NOT NULL AUTO_INCREMENT,
+  titre_film VARCHAR(255),
+  anSortie_film INT,
+  genre_film VARCHAR(255),
+  num_real INT,
+  nom_affiche VARCHAR(255),
+  synopsis TEXT,
+  PRIMARY KEY (num_film),
+  CONSTRAINT FOREIGN KEY (num_real) REFERENCES realisateur(num_real)
 );
+
 
 CREATE TABLE acteur(
 

@@ -142,6 +142,7 @@ function displaySearchResults(results) {
 
     if (results.length > 0) {
         results.forEach(result => {
+          console.log(result)
             let subContainer = document.createElement("a");
             subContainer.classList.add("sub-container-row");
             subContainer.href = "movies.php?nom_film=" + encodeURIComponent(result.titre_film);            let resultItem = document.createElement("div");
@@ -152,7 +153,7 @@ function displaySearchResults(results) {
                 "</div> <div>" +
                 result.anSortie_film +
                 "</div> <div>" +
-                result.genre_film +
+                result.genre +
                 "</div>";
             let imgResult = document.createElement("img");
             imgResult.src = "../images/affiches/" + result.img_film;

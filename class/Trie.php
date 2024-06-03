@@ -59,8 +59,7 @@ class Trie extends PdoWrapper
         $Bacteurs = new Acteurs();
         $Breals = new Realisateurs();
 
-        $query = "SELECT DISTINCT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche
-              FROM Films
+        $query = "SELECT DISTINCT * FROM Films
               LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
               LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
               LEFT JOIN jouer ON jouer.num_film = Films.num_film

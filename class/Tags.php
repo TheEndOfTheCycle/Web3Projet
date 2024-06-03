@@ -7,11 +7,11 @@ use pdo_wrapper\PdoWrapper;
         {
             return $this->exec("select * from tags ",null,"Tag");
         }
-        public function add_tag_to_db($nom_tag,$num_tag)
+        public function add_tag_to_db($nom_tag)
         {
                 //on va inserer un nouveau tag dans le tableau tags
-                $req="Insert into tags (nom_tag,num_tag) values(:nom_tag,:num_tag)";
-                $para = ["nom_tag" =>$nom_tag , "num_tag" => $num_tag];
+                $req="Insert into tags (nom_tag) values(:nom_tag)";
+                $para = ["nom_tag" =>$nom_tag ];
                 $this->exec($req,$para);
         }
         public function remove_tag_from_db($nomTag)

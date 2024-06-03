@@ -35,10 +35,19 @@ class Film extends PdoWrapper
     }
 
     public function getTags()
-    {
-        $req = "select nom_tag from Films inner join film_tag on Films.num_film = film_tag.num_film inner join tags on tags.num_tag = film_tag.num_tag where Films.num_film = " . $this->num_film;
-        return $this->exec($req, null, "Tag");
+{
+    // Utilisez des placeholders dans la requête pour éviter les injections SQL
+    $req = "SELECT nom_tag FROM film_tag INNER JOIN tags ON film_tag.num_tag = tags.num_tag WHERE film_tag.num_film = :num_film";
+    // Assurez-vous que $this->num_film est défini et non vide
+    if (!empty($this->num_film)) {
+        $para = ["num_film" => $this->num_film];
+        // Utilisez la méthode query() au lieu de exec() car cette requête ne modifie pas les données
+        return $this->exec($req, $para, "Tag");
+    } else {
+        return []; // Retourne un tableau vide si $this->num_film n'est pas défini
     }
+}
+
 
     public function getTagsNames()
     {
@@ -50,6 +59,9 @@ class Film extends PdoWrapper
         }
         return $Ttags;
     }
+
+   
+
 
     public function getNumFilm($nomFilm)
     {

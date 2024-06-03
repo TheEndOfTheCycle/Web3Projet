@@ -37,13 +37,16 @@ class FilmForm
                             <div id="preview-container">
                                 <img id="preview-image" src="">
                             </div>
-                            <input type="file" class="form-control-image" id="affiche" name="affiche" accept="image/png, image/gif, image/jpeg">
+                            <input type="file" class="form-control-image" id="affiche" name="affiche"
+                                accept="image/png, image/gif, image/jpeg">
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label neon">Description</label>
                             <span id="description-error" class="error-message"></span>
-                            <input type="text" class="form-control description-film" id="description" name="description" aria-describedby="description">
+                            <textarea class="form-control description-film" id="description" name="description" rows="5"
+                                aria-describedby="description"></textarea>
                         </div>
+
                         <div class="sub-form-acteur">
                             <button type="submit" class="btn sub">Submit</button>
                             <button type="reset" class="btn sub res">Reset</button>
@@ -204,9 +207,20 @@ class FilmForm
         }
         echo "1";
         $afficheFileName = $afficheFile ? $afficheFile['name'] : null;
+        if (!$this->gdb->add_film_to_db($titre, $annee, $genre, $real, $afficheFileName, $syno)) {
+            header('location: ../pages/realisateur_form.php');
+            exit();
+        } else {
 
-        $this->gdb->add_film_to_db($titre, $annee, $genre, $real, $afficheFileName, $syno);
-        echo "2";
+
+            $tagss = new Tags();
+            $num_tag = $tagss->getNumTag($genre);
+            if ($num_tag === null) {
+                $tagss->add_tag_to_db($genre);
+            }
+            $this->gdb->addTagToFilm($titre, $genre);
+
+        }
 
         $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/film.csv';
         $lastId = 0;
