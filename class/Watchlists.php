@@ -3,27 +3,30 @@ use pdo_wrapper\PdoWrapper;
     class Watchlists extends PdoWrapper
     {
 
-        public function getAllFilmTitles()
-        {
-            $req = "SELECT titre_film FROM Films";
-            $results = $this->exec($req, null);
-            
-            // Extracting titles from the result set
-            $titles = [];
-            foreach ($results as $result) {
-                $titles[] = $result->titre_film;
-            }
-            
-            return $titles;
-        }
-        
+        public function getAllFilmsNums()
+{
+    $req = "SELECT DISTINCT num_film FROM Watched_film";
+    $results = $this->exec($req, null);
+
+    // Extracting num_film values from the result set
+    $nums = [];
+    foreach ($results as $result) {
+        $nums[] = $result->num_film;
+    }
+
+    return $nums;
+}
 
 
-        public function getFilm($num_film)
-        {   
-            $req ="SELECT * from Films WHERE num_film=" . $num_film;
-            return $this->exec($req,null,"Film");
-        }
+
+public function getFilm($num_film)
+{   
+    $req = "SELECT * FROM Films WHERE num_film = :num_film";
+    $para = ["num_film" => $num_film];
+    $res = $this->exec($req, $para, "Film");
+
+    return $res ? $res[0] : null;
+}
 
         public function add_film_to_db($num_film,$etat)
         {
@@ -42,6 +45,23 @@ use pdo_wrapper\PdoWrapper;
             $para = ["Etat" =>$state ,"numF" => $num_film];
             $this->exec($req,$para);
         }
+
+        public function filmExists($num_film)
+    {
+        $req = "SELECT COUNT(*) as count FROM Watched_film WHERE num_film = :num_film";
+        $para = ["num_film" => $num_film];
+        $res = $this->exec($req, $para);
+        
+        // On vérifie que $res est bien un tableau et qu'il contient des résultats
+        if (is_array($res) && count($res) > 0) {
+            return $res[0]->count > 0;
+        }
+        
+        // En cas de problème, on retourne false par défaut
+        return false;
+    }
+
+
     }
 
 
