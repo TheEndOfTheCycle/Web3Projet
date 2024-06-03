@@ -4,13 +4,11 @@ require_once "../class/Autoloader.php";
 Autoloader::register();
 session_start();
 
-
 $tagModel = new Tags();
 $tags = $tagModel->getAllTags();
 
 $filmsClass = new Films();
 $allFilms = $filmsClass->getAllFilms();
-
 ?>
 
 <!-- Démarre le buffering -->
@@ -25,7 +23,7 @@ $allFilms = $filmsClass->getAllFilms();
 
     <?php foreach ($tags as $tag): ?>
         <?php
-        $filteredFilms = array_filter($allFilms, function($film) use ($tag) {
+        $filteredFilms = array_filter($allFilms, function ($film) use ($tag) {
             return in_array($tag->nom_tag, $film->getTagsNames());
         });
         if (empty($filteredFilms)) {
@@ -33,22 +31,30 @@ $allFilms = $filmsClass->getAllFilms();
         }
         ?>
         <div class="film-categorie">
-            <span class="film-categorie-name"><?= htmlspecialchars($tag->nom_tag, ENT_QUOTES, 'UTF-8') ?> <a href="moviesTag.php?tag=<?= urlencode($tag->nom_tag) ?>">&nbsp; See more ></a></span>
+            <span class="film-categorie-name"><?= htmlspecialchars($tag->nom_tag, ENT_QUOTES, 'UTF-8') ?> <a
+                    href="moviesTag.php?tag=<?= urlencode($tag->nom_tag) ?>">&nbsp; See more ></a></span>
             <div class="carousel-container">
                 <div class="carousel-arrow left-arrow">&#10094;</div>
                 <div class="films">
                     <?php foreach ($filteredFilms as $film): ?>
-                        <a href="movies.php?nom_film=<?= urlencode($film->titre_film) ?>" class="film-min">
-                            <div class="image-container">
-                            <img src="../images/affiches/<?= htmlspecialchars($film->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>" alt="<?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>">                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                        <div class="image-container ">
+                            <a href="movies.php?nom_film=<?= urlencode($film->titre_film) ?>" class="film-min">
+                                <img src="../images/affiches/<?= htmlspecialchars($film->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>"
+                                    alt="<?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>">
+                                <span><?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8') ?></span>
+
+                            </a>
+                            <svg id="add-icon-<?= $film->num_film ?>" title="Ajouter à la liste" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-lg watch-list-icon hidden" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                            </svg>
+                            <?php if (isset($_SESSION['username'])): ?>
+                                <svg id="delete-icon-<?= $film->titre_film ?>" xmlns="http://www.w3.org/2000/svg" width="25"
+                                    height="25" fill="currentColor" class="bi bi-trash-film hidden c" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
                                 </svg>
-                                <svg id="add-icon" title="Ajouter à la liste" xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-lg watch-list-icon hidden" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-                                </svg>
-                            </div>
-                            <span><?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8') ?></span>
-                        </a>
+                            <?php endif; ?>
+                        </div>
                     <?php endforeach; ?>
                 </div>
                 <div class="carousel-arrow right-arrow">&#10095;</div>
@@ -57,7 +63,73 @@ $allFilms = $filmsClass->getAllFilms();
     <?php endforeach; ?>
 </div>
 
-<!-- Récupère le contenu du buffer (et le vide) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sélectionnez toutes les icônes de corbeille avec la classe "c" et ajoutez un gestionnaire d'événements à chacune
+        document.querySelectorAll('.c').forEach(icon => {
+            icon.addEventListener('click', function () {
+                console.log("clic");
+                // Obtenez l'identifiant unique de l'icône de corbeille
+                let id = this.id.replace('delete-icon-', '');
+                console.log(id);
+                // Appelez une fonction pour supprimer le film avec cet identifiant
+                deleteFilm(id);
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sélectionnez toutes les icônes de corbeille avec la classe "c" et ajoutez un gestionnaire d'événements à chacune
+        document.querySelectorAll('.watch-list-icon').forEach(icon => {
+            icon.addEventListener('click', function () {
+                let id = this.id.replace('add-icon-', '');
+                console.log(id);
+                // Appelez une fonction pour supprimer le film avec cet identifiant
+                addFilmToWatchlist(id);
+            });
+        });
+    });
+
+    function deleteFilm(filmTitle) {
+        // Envoyez une requête AJAX pour supprimer le film correspondant
+        fetch('supprimer_film.php?id=' + filmTitle, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // La suppression s'est bien passée, rafraîchir la page ou mettre à jour la liste des films
+                    window.location.reload(); // Rafraîchir la page
+                } else {
+                    // Gérer les erreurs de suppression
+                    console.error('Erreur lors de la suppression du film');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la suppression du film :', error);
+            });
+    }
+
+    function addFilmToWatchlist(filmTitle) {
+        // Envoyez une requête AJAX pour supprimer le film correspondant
+        fetch('ajouter_film_liste.php?id=' + filmTitle, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // La suppression s'est bien passée, rafraîchir la page ou mettre à jour la liste des films
+                    // Rafraîchir la page
+                    window.location.reload(); // Rafraîchir la page
+                } else {
+                    // Gérer les erreurs de suppression
+                    console.error('Erreur lors de la suppression du film');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la suppression du film :', error);
+            });
+    }
+
+</script>
+
 <?php $content = ob_get_clean() ?>
-<!-- Utilisation du contenu bufferisé -->
 <?php Template::render($content) ?>

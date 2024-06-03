@@ -58,8 +58,8 @@ class Realisateurs extends PdoWrapper
 
     private function remove_real_from_csv($nom_real)
     {
-        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/realisateur.csv';
-        $tempFile = '/home/youcef/Bureau/WEB/yacine3/csv/temp_acteur.csv';
+        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/realisateur.csv';
+        $tempFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/temp_acteur.csv';
 
         if (file_exists($csvFile)) {
             if (($inputFile = fopen($csvFile, 'r')) !== false) {

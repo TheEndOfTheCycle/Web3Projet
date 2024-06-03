@@ -7,6 +7,7 @@
                 </a>
                 <ul id="sidemenu">
                     <li><a href="../index.php">Accueil</a></li>
+                    <li><a href="liste.php">Ma liste</a></li>
                     <li><a href="films.php">Films</a></li>
                     <li><a href="acteurs.php">Acteurs</a></li>
                     <li><a href="realisateurs.php">Réalisateurs</a></li>

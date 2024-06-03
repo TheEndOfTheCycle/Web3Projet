@@ -205,7 +205,6 @@ class FilmForm
                 $uploadedFilePath = null;
             }
         }
-        echo "1";
         $afficheFileName = $afficheFile ? $afficheFile['name'] : null;
         if (!$this->gdb->add_film_to_db($titre, $annee, $genre, $real, $afficheFileName, $syno)) {
             header('location: ../pages/realisateur_form.php');
@@ -223,7 +222,7 @@ class FilmForm
 
         }
 
-        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/film.csv';
+        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/film.csv';
         $lastId = 0;
         if (file_exists($csvFile)) {
             if (($handle = fopen($csvFile, 'r')) !== false) {

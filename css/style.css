@@ -603,14 +603,59 @@ nav ul li a:hover::after{
     margin-right: 10px;
 }
 
+.bi-trash-film{
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    padding: 5px;
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
+
+.watch-list-icon{
+    position: absolute;
+    top: 35px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    padding: 5px;
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
+
 .image-container {
     position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+}
+
+.image-container:hover .bi-trash-film  {
+    opacity: 1;
+    background-color: #ff000d;
+    cursor: pointer;
+
+}
+.image-container:hover .watch-list-icon  {
+    opacity: 1;
+    background-color: #ff000d;
+    cursor: pointer;
+
+}
+
+.image-container:hover .bi-trash3 {
+    opacity: 1;
+    background-color: #ff000d;
+    right: 15px;
 }
 
 .image-container img {
     display: block;
     width: 275px;
     height: 120px;
+    opacity: 1;
 }
 
 .seen-icon {
