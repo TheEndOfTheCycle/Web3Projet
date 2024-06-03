@@ -23,6 +23,29 @@ class Films extends PdoWrapper
     );
 }
 
+public function getFilmByNum($numFilm)
+    {
+        $req = "SELECT * FROM Films WHERE num_film=:numFilm";
+        $para = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $para, "Film");
+
+        return $res ? $res[0] : null;
+    }
+
+public function filmExists($titre_film)
+{
+    $req = "SELECT COUNT(*) as count FROM Films WHERE titre_film=:titre_film";
+    $para = ["titre_film" => $titre_film];
+    $res = $this->exec($req, $para);
+    
+    // On vérifie que $res est bien un tableau et qu'il contient des résultats
+    if (is_array($res) && count($res) > 0) {
+        return $res[0]->count > 0;
+    }
+    
+    // En cas de problème, on retourne false par défaut
+    return false;
+}
 
 
 

@@ -18,66 +18,67 @@ if (isset($_GET['nom_film'])) {
 <div class="background"
     style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('../images/affiches/<?php echo htmlspecialchars($filmDetails->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>');">
     <header>
-    <div id="header">
-        <div class="container">
-            <nav>
-                <a href="../index.php" id="logo">
-                    <span id="first-letter">C</span>ine<span id="first-letter">C</span>ollection
-                </a>
-                <ul id="sidemenu">
-                    <li><a href="../index.php">Accueil</a></li>
-                    <li><a href="films.php">Films</a></li>
-                    <li><a href="acteurs.php">Acteurs</a></li>
-                    <li><a href="realisateurs.php">Réalisateurs</a></li>
-                    <li><a href="tags.php">Tags</a></li>
-                    <?php
-                    if (isset($_SESSION['username'])) {
-                        // Utilisateur connecté, affiche le lien de déconnexion
-                        echo '<li><a href="logout.php">Déconnexion Admin</a></li>';
-                    } else {
-                        // Utilisateur non connecté, affiche le lien de connexion
-                        echo '<li><a href="logging.php">Connexion Admin</a></li>';
-                    }
-                    ?>
-                    <li id="search-icon">
+        <div id="header">
+            <div class="container">
+                <nav>
+                    <a href="../index.php" id="logo">
+                        <span id="first-letter">C</span>ine<span id="first-letter">C</span>ollection
+                    </a>
+                    <ul id="sidemenu">
+                        <li><a href="../index.php">Accueil</a></li>
+                        <li><a href="films.php">Films</a></li>
+                        <li><a href="liste.php">Ma liste</a></li>
+                        <li><a href="acteurs.php">Acteurs</a></li>
+                        <li><a href="realisateurs.php">Réalisateurs</a></li>
+                        <li><a href="tags.php">Tags</a></li>
+                        <?php
+                        if (isset($_SESSION['username'])) {
+                            // Utilisateur connecté, affiche le lien de déconnexion
+                            echo '<li><a href="logout.php">Déconnexion Admin</a></li>';
+                        } else {
+                            // Utilisateur non connecté, affiche le lien de connexion
+                            echo '<li><a href="logging.php">Connexion Admin</a></li>';
+                        }
+                        ?>
+                        <li id="search-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            </svg>
+                        </li>
+
+                        <i class="fa-solid fa-xmark"></i>
+                    </ul>
+
+                    <i class="fa-solid fa-bars"></i>
+                </nav>
+            </div>
+        </div>
+        <form class="search-form">
+            <div class="searche-bar">
+                <div class="searche-bar-1">
+
+                    <button type="submit" class="search-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-search" viewBox="0 0 16 16">
                             <path
                                 d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                         </svg>
-                    </li>
-
-                    <i class="fa-solid fa-xmark"></i>
-                </ul>
-
-                <i class="fa-solid fa-bars"></i>
-            </nav>
-        </div>
-    </div>
-    <form class="search-form">
-        <div class="searche-bar">
-            <div class="searche-bar-1">
-
-                <button type="submit" class="search-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-search" viewBox="0 0 16 16">
+                    </button>
+                    <input type="text" id="search-input" placeholder="Rechercher...">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                        class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                         <path
-                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                     </svg>
-                </button>
-                <input type="text" id="search-input" placeholder="Rechercher...">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                    class="bi bi-x-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path
-                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                </svg>
+                </div>
+                <div id="search-results"></div>
             </div>
-            <div id="search-results"></div>
-        </div>
 
 
-    </form>
+        </form>
     </header>
 
     <div class="container-movie">
@@ -102,8 +103,10 @@ if (isset($_GET['nom_film'])) {
             </div>
             <div class="film-categorie">
                 <span class="acteur-film">Acteurs
-                    <a href="add_acteur.php?num_film=<?= htmlspecialchars($filmDetails->num_film, ENT_QUOTES, 'UTF-8'); ?>"
-                        class="btn btn-primary">Ajouter des acteurs ></a>
+                    <?php if (isset($_SESSION['username'])): ?>
+                        <a href="add_acteur.php?num_film=<?= htmlspecialchars($filmDetails->num_film, ENT_QUOTES, 'UTF-8'); ?>"
+                            class="btn btn-primary">Ajouter des acteurs ></a>
+                    <?php endif; ?>
                 </span>
                 <div class="carousel-container">
                     <div class="carousel-arrow left-arrow">&#10094;</div>

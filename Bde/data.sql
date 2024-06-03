@@ -1,3 +1,4 @@
+
 SET FOREIGN_KEY_CHECKS=0; 
 
 
@@ -59,6 +60,14 @@ CREATE Table film_tag(
     num_tag int ,
    CONSTRAINT FOREIGN KEY (num_film) REFERENCES Films(num_film),
   CONSTRAINT  FOREIGN KEY (num_tag) REFERENCES tags(num_tag)
+
+
+);
+
+CREATE Table Watched_film(
+    num_film int,
+    est_regarde BOOLEAN,
+     CONSTRAINT FOREIGN KEY (num_film) REFERENCES Films(num_film)
 
 
 );
