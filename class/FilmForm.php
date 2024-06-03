@@ -218,6 +218,7 @@ class FilmForm
             if ($num_tag === null) {
                 $tagss->add_tag_to_db($genre);
             }
+            
             $this->gdb->addTagToFilm($titre, $genre);
 
         }

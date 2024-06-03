@@ -12,7 +12,8 @@ if (isset($_GET['nom_film'])) {
 
 <?php ob_start() ?>
 
-<div class="background" style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('../images/affiches/<?php echo htmlspecialchars($filmDetails->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>');">    <header>
+<div class="background" style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('../images/affiches/<?php echo htmlspecialchars($filmDetails->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>');">    
+    <header>
         <div id="header">
             <div class="container">
                 <nav>
@@ -35,7 +36,7 @@ if (isset($_GET['nom_film'])) {
                         <li id="search-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                            </svg>
+                        </svg>
                         </li>
                         <i class="fa-solid fa-xmark"></i>
                     </ul>
@@ -74,7 +75,8 @@ if (isset($_GET['nom_film'])) {
                 <div class="infoMovie2">
                     <div class="cat1">
                         <span><?= htmlspecialchars($filmDetails->getNomReal(), ENT_QUOTES, 'UTF-8'); ?></span>
-                        <img src="<?= "../images/realisateurs/" . htmlspecialchars($filmDetails->getNomImgReal(), ENT_QUOTES, 'UTF-8') ?>" alt="Réalisateur">                    </div>
+                        <img src="<?= "../images/realisateurs/" . htmlspecialchars($filmDetails->getNomImgReal(), ENT_QUOTES, 'UTF-8') ?>" alt="Réalisateur">
+                    </div>
                 </div>
             </div>
             <div class="film-categorie">
@@ -84,13 +86,16 @@ if (isset($_GET['nom_film'])) {
                     <div class="films">
                         <?php foreach ($filmDetails->getActors() as $actor): ?>
                             <div class="acteur-scroll">
-                                <img src="<?= "../images/acteurs/" . $actor->nom_img?>" alt="<?= htmlspecialchars($actor->nom_act, ENT_QUOTES, 'UTF-8'); ?>">
-                                <span><?= $actor->nom_act; ?></span>
+                                <img src="<?= "../images/acteurs/" . $actor->nom_img ?>" alt="<?= htmlspecialchars($actor->nom_act, ENT_QUOTES, 'UTF-8'); ?>">
+                                <span><?= htmlspecialchars($actor->nom_act, ENT_QUOTES, 'UTF-8'); ?></span>
                             </div>
                         <?php endforeach; ?>
                     </div>
                     <div class="carousel-arrow right-arrow">&#10095;</div>
                 </div>
+            </div>
+            <div class="add-actor-button">
+                <a href="add_acteur.php?num_film=<?= htmlspecialchars($filmDetails->num_film, ENT_QUOTES, 'UTF-8'); ?>" class="btn btn-primary">Ajouter des acteurs</a>
             </div>
         <?php else: ?>
             <p>Film non trouvé.</p>

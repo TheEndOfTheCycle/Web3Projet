@@ -20,6 +20,15 @@ class Acteurs extends PdoWrapper
         return $res[0]->num_act;
     }
 
+    public function check_actor_in_film($num_act, $num_film)
+    {
+        $req = "SELECT COUNT(*) as count FROM jouer WHERE num_act=:num_act AND num_film=:num_film";
+        $para = ["num_act" => $num_act, "num_film" => $num_film];
+        $result = $this->exec($req, $para);
+        $count = $result[0]->count;
+        return $count > 0;
+    }
+
     public function add_actor_to_db($nomAct, $ImgAct)
     {
         // on va inserer le nom, le numero et le nom de l'image dans le tableau acteur
