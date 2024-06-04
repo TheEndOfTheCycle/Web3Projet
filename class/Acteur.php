@@ -8,33 +8,30 @@ class Acteur extends PdoWrapper{
     public $nom_act;
     public $num_act;
     public $nom_img;
-    public function getMovies()
+   
+
+    public function getMovies($num)
     {
-        $tabFilms =[];
-        $i=0;
-        $req ="select nom_act,titre_film from (acteur  inner join jouer on jouer.num_act=acteur.num_act) inner join Films where Films.num_film=jouer.num_film and acteur.num_act=".$this->num_act;
-       $results= $this->exec(
-           $req,
-            null,
-            null) ;
-        foreach($results as $res)
-        {
-            $tabFilms[$i]=$res;
-            $i++;
+        $tabFilms = [];
+        $req = "
+            SELECT *
+            FROM acteur
+            INNER JOIN jouer ON jouer.num_act = acteur.num_act
+            INNER JOIN Films ON Films.num_film = jouer.num_film
+            WHERE acteur.num_act = :num_act
+        ";
+    
+        $params = ['num_act' => $num];
+        $results = $this->exec($req, $params, null);
+    
+        foreach ($results as $res) {
+            $tabFilms[] = $res;
         }
-        return $tabFilms; 
+    
+        return $tabFilms;
     }
-    public function getMovieNames() //ce tableau est de taille sizeof(Mnames)
-    {
-        $Tnoms= [];
-        $i=0;
-        foreach($this->getMovies() as $mov)
-        {
-            $Tnoms[$i]=$mov->titre_film;
-            $i++;
-        }
-        return $Tnoms;
-    }
+
+   
     public function getHTML(){ 
         ?>
         <div class="actor">

@@ -58,8 +58,11 @@ ob_start();
             ?>
             <div class="cat1">
                 <?php if ($realisateur->nom_img != null): ?>
-                    <!-- Utiliser le chemin approprié pour l'image du réalisateur -->
-                    <img src="../images/realisateurs/<?= $realisateur->nom_img ?>" alt="<?= $realisateur->nom_real ?>">
+                    <a href="realisateur.php?nom_real=<?= urlencode($realisateur->nom_real) ?>">
+                        <img src="../images/realisateurs/<?= $realisateur->nom_img ?>" alt="<?= $realisateur->nom_real ?>">
+                        <span><?= $realisateur->nom_real ?></span>
+
+                    </a>
                     <?php if (isset($_SESSION['username'])): ?>
                         <!-- Ajoutez un identifiant unique à chaque icône de corbeille, par exemple, "delete-icon-ID" -->
                         <svg id="delete-icon-<?= $realisateur->nom_real ?>" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
@@ -69,7 +72,6 @@ ob_start();
                         </svg>
                     <?php endif; ?>
                 <?php endif; ?>
-                <span><?= $realisateur->nom_real ?></span>
             </div>
         <?php endforeach; ?>
     </div>

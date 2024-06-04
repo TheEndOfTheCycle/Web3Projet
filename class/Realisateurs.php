@@ -78,4 +78,33 @@ class Realisateurs extends PdoWrapper
             rename($tempFile, $csvFile);
         }
     }
+
+    public function getFilmsByRealisateur($nomRealisateur)
+    {
+        $req = "SELECT f.* 
+                FROM Films f
+                INNER JOIN realisateur r ON f.num_real = r.num_real
+                WHERE r.nom_real = :nomRealisateur";
+        $para = ["nomRealisateur" => $nomRealisateur];
+        return $this->exec($req, $para, "Film");
+    }
+
+    public function getRealisateur($nom_realisateur)
+{
+    // Supposons que getNumReal($nom_realisateur) est une méthode valide qui renvoie le numéro du réalisateur
+    $num_realisateur = $this->getNumReal($nom_realisateur);
+
+    // Correction de la requête et des paramètres
+    $req = "SELECT * FROM realisateur WHERE num_real = :numR";
+    $para = ["numR" => $num_realisateur];
+
+    // Exécution de la requête
+    $res = $this->exec($req, $para, "Realisateur");
+
+    // Retourner le premier résultat, si disponible
+    return isset($res[0]) ? $res[0] : null;
+}
+
+
+
 }

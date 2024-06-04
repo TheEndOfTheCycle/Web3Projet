@@ -11,6 +11,7 @@ class Film extends PdoWrapper
     public $num_real;
     public $nom_affiche;
     public $synopsis;
+    public $est_regarde;
 
     public function getReal() // retourne le realisateur du film
     {

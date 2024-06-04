@@ -19,6 +19,26 @@ class Acteurs extends PdoWrapper
         $res = $this->exec($req, $para, "Acteur");
         return $res[0]->num_act;
     }
+   
+    
+
+
+    public function getActeur($nom_acteur)
+    {
+        // Supposons que getNumAct($nom_acteur) est une méthode valide qui renvoie le numéro de l'acteur
+        $num_acteur = $this->getNumAct($nom_acteur);
+
+        // Correction de la requête et des paramètres
+        $req = "SELECT * FROM acteur WHERE num_act = :numA";
+        $para = ["numA" => $num_acteur];
+
+        // Exécution de la requête
+        $res = $this->exec($req, $para, "Acteur");
+
+        // Retourner le premier résultat, si disponible
+        return isset($res[0]) ? $res[0] : null;
+    }
+
 
     public function check_actor_in_film($num_act, $num_film)
     {
@@ -73,7 +93,7 @@ class Acteurs extends PdoWrapper
 
     private function add_actor_to_csv($nom_act, $nom_img)
     {
-        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/acteur.csv';
+        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
         $newId = $this->getNumAct($nom_act);
 
         // Write to CSV file
@@ -89,7 +109,7 @@ class Acteurs extends PdoWrapper
 
     private function remove_actor_from_csv($nom_act)
     {
-        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/acteur.csv';
+        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
         $tempFile = tempnam(sys_get_temp_dir(), 'csv');
 
         if (file_exists($csvFile)) {
@@ -110,4 +130,3 @@ class Acteurs extends PdoWrapper
         }
     }
 }
-

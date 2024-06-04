@@ -6,26 +6,24 @@ Autoloader::register();
 if (isset($_GET['id'])) {
     $filmNum = $_GET['id'];
 
+    // Créez une instance de la classe Films pour gérer l'état du film
+    $filmsClass = new Films();
+    $existingFilm = $filmsClass->getFilmByNum($filmNum);
+    $title = $existingFilm->titre_film;
 
-        // Créez une instance de la classe Watchlists pour gérer la watchlist
-        $listesClass = new Watchlists();
-        $existingInWatchlist = $listesClass->getFilm($filmNum);
-        $temp = $existingInWatchlist->num_film;
-        $etat = $existingInWatchlist->est_regarde;
+    if ($filmsClass->filmExists($title)) {
+        $etat = $existingFilm->est_regarde; // Assurez-vous de récupérer la propriété correctement
 
-        if ($listesClass->filmExists($temp)) {
-            // Ajoutez le film à la watchlist
-            if($etat){
-                $listesClass->updateEtat($filmNum,0);
-            }else{
-                $listesClass->updateEtat($filmNum,1);
-            }
-            echo "Film ajouté à la liste";
-        } else {
-            echo "Le film est déjà dans la liste";
-        }
-  
+        // Inversez l'état du film
+        $nouvelEtat = $etat ? 0 : 1;
+
+        $filmsClass->updateEtat($filmNum, $nouvelEtat);
+
+        echo "État du film mis à jour avec succès.";
+    } else {
+        echo "Le film n'existe pas dans la base de données.";
+    }
 } else {
-    echo "ID du film non spécifié";
+    echo "ID du film non spécifié.";
 }
 ?>
