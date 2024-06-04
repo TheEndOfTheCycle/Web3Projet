@@ -61,6 +61,8 @@ public function filmExists($titre_film)
             $this->exec($req, $para);
             $req = "DELETE FROM film_tag WHERE num_film=:numF";
             $this->exec($req, $para);
+            $req = "DELETE FROM Watched_film WHERE num_film=:numF";
+            $this->exec($req, $para);
             // Supprimer le film de la table Films
             $para = ["nomF" => $nomFilm];
             $req = "DELETE FROM Films WHERE titre_film=:nomF";
@@ -68,6 +70,13 @@ public function filmExists($titre_film)
         } else {
             echo "Le film '$nomFilm' n'existe pas dans la base de données.";
         }
+    }
+
+    public function updateEtat($numFilm, $nouvelEtat)
+    {
+        $req = "UPDATE Films SET est_regarde = :etat WHERE num_film = :numFilm";
+        $params = ["etat" => $nouvelEtat, "numFilm" => $numFilm];
+        return $this->exec($req, $params);
     }
 
     public function getMoviesByTagName($nomTag)
@@ -97,6 +106,14 @@ public function filmExists($titre_film)
         return $res ? $res[0] : null;
     }
 
+    public function getFilmIdByTitle($titre_film)
+    {
+        $req = "SELECT num_film FROM Films WHERE titre_film = :titre_film";
+        $para = ["titre_film" => $titre_film];
+        $res = $this->exec($req, $para);
+
+        return $res ? $res[0]->num_film : null;
+    }
     public function addTagToFilm($nomFilm, $nomTag)
     {
         $Otags = new Tags();
@@ -128,6 +145,20 @@ public function filmExists($titre_film)
             echo "Le film '$nom_film' n'existe pas dans la base de données.";
         }
     }
+
+    public function updateFilmTitle($numFilm, $newTitle)
+    {
+        $req = "UPDATE Films SET titre_film = :newTitle WHERE num_film = :numFilm";
+        $params = ["newTitle" => $newTitle, "numFilm" => $numFilm];
+        $this->exec($req, $params);
+    }
+
+    public function updateFilmReleaseDate($numFilm, $newReleaseDate)
+{
+    $req = "UPDATE Films SET anSortie_film = :newReleaseDate WHERE num_film = :numFilm";
+    $params = ["newReleaseDate" => $newReleaseDate, "numFilm" => $numFilm];
+    $this->exec($req, $params);
+}
 
     public function add_film_to_db($titre_film,$anSortie_film,$genre, $nom_real,$nom_affiche,$synopsis)//plusieurs_tags nous permet de determiner si tags est un tableau ou pas,de plus tags doit etre une instance de classe tag
     {

@@ -19,6 +19,12 @@ usort($liste_acteurs, function ($a, $b) {
     return strcmp($a->nom_act, $b->nom_act);
 });
 
+// Obtenir la liste des lettres initiales des noms d'acteurs
+$initiales = array_unique(array_map(function ($acteur) {
+    return strtoupper(substr($acteur->nom_act, 0, 1));
+}, $liste_acteurs));
+sort($initiales); // Trier les initiales par ordre alphabétique
+
 ob_start();
 ?>
 
@@ -38,6 +44,14 @@ ob_start();
             <?php endif; ?>
         </div>
 
+        <!-- Alphabet des lettres -->
+        <div class="alphabet">
+            <?php
+            foreach ($initiales as $letter) {
+                echo '<a href="#' . $letter . '">' . $letter . '</a>';
+            }
+            ?>
+        </div>
 
         <?php
         $current_letter = null; // Variable pour suivre la lettre actuelle
@@ -51,15 +65,16 @@ ob_start();
                 // Mettre à jour la lettre actuelle
                 $current_letter = strtoupper(substr($acteur->nom_act, 0, 1));
                 // Afficher la lettre actuelle
-                echo '<h3>' . $current_letter . '</h3>';
+                echo '<h3 id="' . $current_letter . '">' . $current_letter . '</h3>';
                 echo '<hr class="hr-acteurs">';
                 // Ouvrir une nouvelle ligne pour les acteurs de cette lettre
                 echo '<div class="acteurs-realisateurs">';
             endif;
             ?>
+
             <div class="cat1">
                 <?php if ($acteur->nom_img != null): ?>
-                    <a href="acteur.php?nom_film=<?= urlencode($acteur->nom_act) ?>">
+                    <a href="acteur.php?nom_act=<?= urlencode($acteur->nom_act) ?>">
                         <!-- Utiliser le chemin approprié pour l'image du réalisateur -->
                         <img src="../images/acteurs/<?= $acteur->nom_img ?>" alt="<?= $acteur->nom_act ?>">
                         <span><?= $acteur->nom_act ?></span>

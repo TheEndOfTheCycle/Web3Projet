@@ -19,15 +19,26 @@ class Acteurs extends PdoWrapper
         $res = $this->exec($req, $para, "Acteur");
         return $res[0]->num_act;
     }
+   
+    
+
 
     public function getActeur($nom_acteur)
     {
+        // Supposons que getNumAct($nom_acteur) est une méthode valide qui renvoie le numéro de l'acteur
         $num_acteur = $this->getNumAct($nom_acteur);
-        $req = "select * from acteur where num_act = :numF";
+
+        // Correction de la requête et des paramètres
+        $req = "SELECT * FROM acteur WHERE num_act = :numA";
         $para = ["numA" => $num_acteur];
+
+        // Exécution de la requête
         $res = $this->exec($req, $para, "Acteur");
-        return ($res[0]);
+
+        // Retourner le premier résultat, si disponible
+        return isset($res[0]) ? $res[0] : null;
     }
+
 
     public function check_actor_in_film($num_act, $num_film)
     {

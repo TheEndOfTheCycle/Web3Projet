@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once "../config.php";
 
@@ -6,7 +6,8 @@ use pdo_wrapper\PdoWrapper;
 
 class Realisateurs extends PdoWrapper
 {
-    public function getAllreal(){
+    public function getAllreal()
+    {
         return $this->exec(
             "SELECT * FROM realisateur ",
             null,
@@ -17,15 +18,15 @@ class Realisateurs extends PdoWrapper
     public function add_real_to_db($nom_real, $nom_img)
     {
 
-       if($nom_img === null){
-        $nom_img = "avatare.jpg";
-       } 
+        if ($nom_img === null) {
+            $nom_img = "avatare.jpg";
+        }
         //on va inserer le numero le nom du real et de l image dans le tableau realisateur
         $req = "Insert into realisateur (nom_real, nom_img) values(:nom_real, :nom_img)";
         $para = ["nom_real" => $nom_real, "nom_img" => $nom_img];
         $this->exec($req, $para);
     }
-    
+
     public function remove_real_from_db($nom_real)
     {
         // il faut d abord effacer le film de la bde
@@ -53,11 +54,37 @@ class Realisateurs extends PdoWrapper
         $res = $this->exec($req, $para, "Realisateur");
         return $res[0]->num_real;
     }
-  
+
     public function getFilmReal($nom_real)
     {
         $req = "select Films.* from realisateur inner join Films on Films.num_real=" . $this->getNumReal($nom_real);
         return $this->exec($req, null, "Film");
+    }
+
+    public function getFilmsByRealisateur($nomRealisateur)
+    {
+        $req = "SELECT f.* 
+                FROM Films f
+                INNER JOIN realisateur r ON f.num_real = r.num_real
+                WHERE r.nom_real = :nomRealisateur";
+        $para = ["nomRealisateur" => $nomRealisateur];
+        return $this->exec($req, $para, "Film");
+    }
+
+    public function getRealisateur($nom_realisateur)
+    {
+        // Supposons que getNumReal($nom_realisateur) est une méthode valide qui renvoie le numéro du réalisateur
+        $num_realisateur = $this->getNumReal($nom_realisateur);
+
+        // Correction de la requête et des paramètres
+        $req = "SELECT * FROM realisateur WHERE num_real = :numR";
+        $para = ["numR" => $num_realisateur];
+
+        // Exécution de la requête
+        $res = $this->exec($req, $para, "Realisateur");
+
+        // Retourner le premier résultat, si disponible
+        return isset($res[0]) ? $res[0] : null;
     }
 
     private function remove_real_from_csv($nom_real)

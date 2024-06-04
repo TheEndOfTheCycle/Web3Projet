@@ -624,6 +624,8 @@ nav ul li a:hover::after{
     color: #fff;
     transition: opacity 0.3s ease;
 }
+
+
 /*
 .watch-list-icon{
     position: absolute;
@@ -967,7 +969,28 @@ nav ul li a:hover::after{
 
 }
 
+.alphabet{
+    display: flex;
+    font-size: 15px;
+    gap:10px;
+    
+}
 
+.alphabet a{
+    text-decoration: underline;
+    color: white;
+}
+
+.act{
+    position: absolute;
+    top: 35px;
+    right: 255px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    padding: 5px;
+    color: #fff;
+    transition: opacity 0.3s ease;
+}
 
 /*------- small screens -----*/
 nav .fa-solid{
