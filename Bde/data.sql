@@ -9,6 +9,7 @@ DROP table if EXISTS jouer ;
 DROP table if EXISTS genre ;
 DROP table if EXISTS tags ;
 DROP table if EXISTS film_tag ;
+DROP table if EXISTS Watched_film;
 SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE realisateur(
@@ -26,6 +27,7 @@ CREATE TABLE Films (
   num_real INT,
   nom_affiche VARCHAR(255),
   synopsis TEXT,
+  est_regarde BOOLEAN,
   PRIMARY KEY (num_film),
   CONSTRAINT FOREIGN KEY (num_real) REFERENCES realisateur(num_real)
 );

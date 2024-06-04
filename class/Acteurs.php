@@ -20,6 +20,15 @@ class Acteurs extends PdoWrapper
         return $res[0]->num_act;
     }
 
+    public function getActeur($nom_acteur)
+    {
+        $num_acteur = $this->getNumAct($nom_acteur);
+        $req = "select * from acteur where num_act = :numF";
+        $para = ["numA" => $num_acteur];
+        $res = $this->exec($req, $para, "Acteur");
+        return ($res[0]);
+    }
+
     public function check_actor_in_film($num_act, $num_film)
     {
         $req = "SELECT COUNT(*) as count FROM jouer WHERE num_act=:num_act AND num_film=:num_film";

@@ -624,6 +624,7 @@ nav ul li a:hover::after{
     color: #fff;
     transition: opacity 0.3s ease;
 }
+/*
 .watch-list-icon{
     position: absolute;
     top: 35px;
@@ -633,7 +634,7 @@ nav ul li a:hover::after{
     padding: 5px;
     color: #fff;
     transition: opacity 1s ease;
-}
+}*/
 
 .hidden {
     opacity: 0;
@@ -706,7 +707,7 @@ nav ul li a:hover::after{
 .bi-trash-film{
     position: absolute;
     top: 5px;
-    right: 20px;
+    right: 15px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 50%;
     padding: 5px;
@@ -716,8 +717,8 @@ nav ul li a:hover::after{
 
 .watch-list-icon{
     position: absolute;
-    top: 35px;
-    right: 20px;
+    top: 5px;
+    right: 255px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 50%;
     padding: 5px;
@@ -730,6 +731,11 @@ nav ul li a:hover::after{
     display: inline-block;
     display: flex;
     justify-content: center;
+}
+
+
+.filtre{
+    filter: grayscale(100%);
 }
 
 .image-container:hover .bi-trash-film  {

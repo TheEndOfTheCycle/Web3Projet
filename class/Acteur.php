@@ -35,6 +35,8 @@ class Acteur extends PdoWrapper{
         }
         return $Tnoms;
     }
+
+   
     public function getHTML(){ 
         ?>
         <div class="actor">

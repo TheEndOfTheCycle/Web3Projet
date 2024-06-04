@@ -140,8 +140,8 @@ public function filmExists($titre_film)
         $num_real=$Breals->getNumReal($nom_real);
 
         //on va saisir les infos du film dans la table films
-        $req="insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis)";
-        $para = [ "titre_film" =>$titre_film, "anSortie_film" =>$anSortie_film ,"genre_film"=>$genre, "num_real" =>$num_real , "nom_affiche" =>$nom_affiche, "synopsis" =>$synopsis];
+        $req="insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis,est_regarde) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis,:est_regarde)";
+        $para = [ "titre_film" =>$titre_film, "anSortie_film" =>$anSortie_film ,"genre_film"=>$genre, "num_real" =>$num_real , "nom_affiche" =>$nom_affiche, "synopsis" =>$synopsis, "est_regarde" => 0];
         $this->exec($req,$para);
        
         

@@ -4,10 +4,10 @@ require ".." . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . 'Autoloader
 Autoloader::register();
 session_start();
 
-if (isset($_GET['nom_film'])) {
-    $nomFilm = $_GET['nom_film'];
-    $filmDetails = (new Film())->getFilm($nomFilm);
-    $num_film = $filmDetails->num_film;
+if (isset($_GET['nom_act'])) {
+    $nomact = $_GET['nom_act'];
+    $acteurDetails = (new Acteurs())->getActeur($nomact);
+    $num_acteur = $acteurDetails->num_act;
 }
 
 

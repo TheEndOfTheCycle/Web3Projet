@@ -27,9 +27,9 @@ $films = new Films();
                 <?php $film = $films->getFilmByNum($num); ?>
 
                 <div class="image-container">
-                    <a href="movies.php??nom_film=<?= $film->titre_film ?>" class="film-min">
+                    <a href="movies.php?nom_film=<?= $film->titre_film ?>" class="film-min">
                         <img src="../images/affiches/<?= htmlspecialchars($film->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>"
-                            alt="<?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>">
+                            alt="<?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>" class="image-liste">
                         <span><?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8') ?></span>
                     </a>
 
@@ -65,6 +65,7 @@ $films = new Films();
                         iconPairs.forEach(pair => {
                             const seenIcon = pair.querySelector('.bi1');
                             const notSeenIcon = pair.querySelector('.bi2');
+                            const img = pair.querySelector(".image-liste");
 
                             // Initialement, cacher l'icône de non-visionnage
                             seenIcon.classList.remove('hide-icon');
@@ -72,10 +73,12 @@ $films = new Films();
 
                             seenIcon.addEventListener('click', () => {
                                 toggleIcons(seenIcon, notSeenIcon);
+                                img.classList.add('filtre');
                             });
 
                             notSeenIcon.addEventListener('click', () => {
                                 toggleIcons(notSeenIcon, seenIcon);
+                                img.classList.remove('filtre');
                             });
                         });
 

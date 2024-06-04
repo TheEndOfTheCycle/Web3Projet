@@ -1,22 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let seenIcon = document.getElementById("seen-icon");
-    let notSeenIcon = document.getElementById("not-seen-icon");
+  let iconPairs = document.querySelectorAll(".icons-movie");
 
-    // Initialement cacher seenIcon
-    seenIcon.classList.add("hide-icon");
+  iconPairs.forEach((pair) => {
+    const seenIcon = pair.querySelector(".bi1");
+    const notSeenIcon = pair.querySelector(".bi2");
+
+    // Initialement, cacher l'icône de non-visionnage
     notSeenIcon.classList.remove("hide-icon");
+    seenIcon.classList.add("hide-icon");
 
-    seenIcon.addEventListener("click", function () {
-        toggleIcons(seenIcon, notSeenIcon);
+    seenIcon.addEventListener("click", () => {
+      toggleIcons(seenIcon, notSeenIcon);
     });
 
-    notSeenIcon.addEventListener("click", function () {
-        toggleIcons(notSeenIcon, seenIcon);
+    notSeenIcon.addEventListener("click", () => {
+      toggleIcons(notSeenIcon, seenIcon);
     });
+  });
 
-    function toggleIcons(iconToHide, iconToShow) {
-        iconToHide.classList.add("hide-icon");
-        iconToShow.classList.remove("hide-icon");
-    }
-
-})
+  function toggleIcons(iconToHide, iconToShow) {
+    iconToHide.classList.add("hide-icon");
+    iconToShow.classList.remove("hide-icon");
+  }
+});
