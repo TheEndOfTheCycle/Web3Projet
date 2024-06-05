@@ -14,16 +14,16 @@ class Films extends PdoWrapper
         );
     }
 
-  public function getAllGenres()
-{
-    return $this->exec(
-        "SELECT genre_film FROM Films",
-        null,
-        'genre_film'
-    );
-}
+    public function getAllGenres()
+    {
+        return $this->exec(
+            "SELECT genre_film FROM Films",
+            null,
+            'genre_film'
+        );
+    }
 
-public function getFilmByNum($numFilm)
+    public function getFilmByNum($numFilm)
     {
         $req = "SELECT * FROM Films WHERE num_film=:numFilm";
         $para = ["numFilm" => $numFilm];
@@ -32,20 +32,20 @@ public function getFilmByNum($numFilm)
         return $res ? $res[0] : null;
     }
 
-public function filmExists($titre_film)
-{
-    $req = "SELECT COUNT(*) as count FROM Films WHERE titre_film=:titre_film";
-    $para = ["titre_film" => $titre_film];
-    $res = $this->exec($req, $para);
-    
-    // On vérifie que $res est bien un tableau et qu'il contient des résultats
-    if (is_array($res) && count($res) > 0) {
-        return $res[0]->count > 0;
+    public function filmExists($titre_film)
+    {
+        $req = "SELECT COUNT(*) as count FROM Films WHERE titre_film=:titre_film";
+        $para = ["titre_film" => $titre_film];
+        $res = $this->exec($req, $para);
+
+        // On vérifie que $res est bien un tableau et qu'il contient des résultats
+        if (is_array($res) && count($res) > 0) {
+            return $res[0]->count > 0;
+        }
+
+        // En cas de problème, on retourne false par défaut
+        return false;
     }
-    
-    // En cas de problème, on retourne false par défaut
-    return false;
-}
 
 
 
@@ -114,6 +114,128 @@ public function filmExists($titre_film)
 
         return $res ? $res[0]->num_film : null;
     }
+
+
+    public function getFilmIdByYear($anSortie_film)
+    {
+        $req = "SELECT num_film FROM Films WHERE anSortie_film = :anSortie_film";
+        $para = ["anSortie_film" => $anSortie_film];
+        $res = $this->exec($req, $para);
+
+        return $res ? $res[0]->num_film : null;
+    }
+
+    public function getFilmIdBySynopsis($synopsis)
+    {
+        $req = "SELECT num_film FROM Films WHERE synopsis = :synopsis";
+        $params = ["synopsis" => $synopsis];
+        $res = $this->exec($req, $params);
+
+        // Vérifier si des résultats ont été retournés
+        if ($res && count($res) > 0) {
+            return $res[0]->num_film;
+        } else {
+            return null;
+        }
+    }
+    public function getSynopsisById($numFilm)
+    {
+        $req = "SELECT synopsis FROM Films WHERE num_film = :numFilm";
+        $params = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $params);
+
+        return $res ? $res[0]->synopsis : null;
+    }
+
+
+    public function getTitreById($numFilm)
+    {
+        $req = "SELECT titre_film FROM Films WHERE num_film = :numFilm";
+        $params = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $params);
+
+        return $res ? $res[0]->titre_film : null;
+    }
+
+    public function getYearById($numFilm)
+    {
+        $req = "SELECT anSortie_film FROM Films WHERE num_film = :numFilm";
+        $params = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $params);
+
+        return $res ? $res[0]->anSortie_film : null;
+    }
+
+    public function getTagsById($numFilm)
+    {
+        $req = "SELECT t.nom_tag 
+            FROM tags t
+            INNER JOIN film_tag ft ON t.num_tag = ft.num_tag
+            INNER JOIN Films f ON ft.num_film = f.num_film
+            WHERE f.num_film = :numFilm";
+        $params = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $params);
+
+        return $res ? array_map(function ($row) {
+            return $row->nom_tag;
+        }, $res) : [];
+    }
+
+    public function updateFilmTag($numFilm, $tagsArray)
+    {
+        $Otags = new Tags();
+
+        // Supprimer tous les tags associés au film
+        $req = "DELETE FROM film_tag WHERE num_film = :numFilm";
+        $params = ["numFilm" => $numFilm];
+        $this->exec($req, $params);
+
+        // Ajouter les nouveaux tags
+        foreach ($tagsArray as $tag) {
+            $tag = trim($tag); // Supprimer les espaces autour du tag
+
+            // Vérifiez si le tag existe, sinon, ajoutez-le
+            if (!$Otags->tagExists($tag)) {
+                $Otags->add_tag_to_db($tag);
+            }
+
+            // Récupérez le numéro du tag
+            $numTag = $Otags->getNumTag($tag);
+
+            // Ajouter le tag au film dans la table film_tag
+            $req = "INSERT INTO film_tag (num_film, num_tag) VALUES(:numFilm, :numTag)";
+            $para = ["numFilm" => $numFilm, "numTag" => $numTag];
+            $this->exec($req, $para);
+        }
+    }
+    public function getFilmTitleByNumReal($numRealisateur)
+    {
+        // Requête SQL pour récupérer le titre d'un film associé à un numéro de réalisateur
+        $req = "SELECT titre_film FROM Films WHERE num_real = :numReal LIMIT 1";
+        $params = ["numReal" => $numRealisateur];
+        $res = $this->exec($req, $params);
+
+
+        return $res[0]->titre_film;
+    }
+    public function getNumRealById($numFilm)
+    {
+        $req = "SELECT num_real FROM Films WHERE num_film = :numFilm";
+        $params = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $params);
+
+        return $res ? $res[0]->num_real : null;
+    }
+    public function getNomReal($num_real)
+    {
+        $req = "SELECT nom_real FROM realisateur WHERE num_real = :num_real";
+        $params = ["num_real" => $num_real];
+        $res = $this->exec($req, $params);
+
+        return $res ? $res[0]->nom_real : null;
+    }
+
+
     public function addTagToFilm($nomFilm, $nomTag)
     {
         $Otags = new Tags();
@@ -153,29 +275,39 @@ public function filmExists($titre_film)
         $this->exec($req, $params);
     }
 
-    public function updateFilmReleaseDate($numFilm, $newReleaseDate)
-{
-    $req = "UPDATE Films SET anSortie_film = :newReleaseDate WHERE num_film = :numFilm";
-    $params = ["newReleaseDate" => $newReleaseDate, "numFilm" => $numFilm];
-    $this->exec($req, $params);
-}
+    public function updateFilmYear($numFilm, $newYear)
+    {
+        $req = "UPDATE Films SET anSortie_film = :newYear WHERE num_film = :numFilm";
+        $params = ["newYear" => $newYear, "numFilm" => $numFilm];
+        $this->exec($req, $params);
+    }
 
-    public function add_film_to_db($titre_film,$anSortie_film,$genre, $nom_real,$nom_affiche,$synopsis)//plusieurs_tags nous permet de determiner si tags est un tableau ou pas,de plus tags doit etre une instance de classe tag
+
+    public function updateFilmSynopsis($numFilm, $newSynopsis)
+    {
+        $req = "UPDATE Films SET synopsis = :newSynopsis WHERE num_film = :numFilm";
+        $params = ["newSynopsis" => $newSynopsis, "numFilm" => $numFilm];
+        $this->exec($req, $params);
+    }
+
+
+
+    public function add_film_to_db($titre_film, $anSortie_film, $genre, $nom_real, $nom_affiche, $synopsis)//plusieurs_tags nous permet de determiner si tags est un tableau ou pas,de plus tags doit etre une instance de classe tag
     {
         $Breals = new Realisateurs();
-        $num_real=$Breals->getNumReal($nom_real);
-        if($num_real === null){
-           
+        $num_real = $Breals->getNumReal($nom_real);
+        if ($num_real === null) {
+
             $Breals->add_real_to_db($nom_real, null);
         }
-        $num_real=$Breals->getNumReal($nom_real);
+        $num_real = $Breals->getNumReal($nom_real);
 
         //on va saisir les infos du film dans la table films
-        $req="insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis,est_regarde) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis,:est_regarde)";
-        $para = [ "titre_film" =>$titre_film, "anSortie_film" =>$anSortie_film ,"genre_film"=>$genre, "num_real" =>$num_real , "nom_affiche" =>$nom_affiche, "synopsis" =>$synopsis, "est_regarde" => 0];
-        $this->exec($req,$para);
-       
-        
+        $req = "insert into Films(titre_film,anSortie_film,genre_film,num_real,nom_affiche,synopsis,est_regarde) values(:titre_film,:anSortie_film,:genre_film,:num_real,:nom_affiche,:synopsis,:est_regarde)";
+        $para = ["titre_film" => $titre_film, "anSortie_film" => $anSortie_film, "genre_film" => $genre, "num_real" => $num_real, "nom_affiche" => $nom_affiche, "synopsis" => $synopsis, "est_regarde" => 0];
+        $this->exec($req, $para);
+
+
     }
 
 

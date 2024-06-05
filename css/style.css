@@ -992,6 +992,16 @@ nav ul li a:hover::after{
     transition: opacity 0.3s ease;
 }
 
+.stylo{
+    margin-left: 10px;
+    color:#fff;
+    transition: opacity 0.3s ease;
+}
+
+.stylo:hover{
+    color:#ff000d;
+}
+
 /*------- small screens -----*/
 nav .fa-solid{
     display: none;

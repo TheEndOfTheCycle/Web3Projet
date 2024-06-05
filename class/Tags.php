@@ -39,7 +39,14 @@ use pdo_wrapper\PdoWrapper;
             }
            // var_dump($res);
         }
-
+        public function tagExists($nomTag)
+        {
+            $req = "SELECT COUNT(*) as count FROM tags WHERE nom_tag = :nom_tag";
+            $para = ["nom_tag" => $nomTag];
+            $res = $this->exec($req, $para);
+    
+            return is_array($res) && count($res) > 0 && $res[0]->count > 0;
+        }
 
     }
 

@@ -109,4 +109,10 @@ class Realisateurs extends PdoWrapper
             rename($tempFile, $csvFile);
         }
     }
+    public function updateRealisateurName($numReal, $newName)
+    {
+        $req = "UPDATE realisateur SET nom_real = :newName WHERE num_real = :numReal";
+        $params = ["newName" => $newName, "numReal" => $numReal];
+        $this->exec($req, $params);
+    }
 }

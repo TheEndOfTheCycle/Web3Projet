@@ -1,58 +1,73 @@
 <?php
-// Assurez-vous d'échapper les variables pour éviter les attaques XSS
-$titre_film = htmlspecialchars($_GET['titre'], ENT_QUOTES, 'UTF-8');
-$title = htmlspecialchars($_GET['title'], ENT_QUOTES, 'UTF-8');
+require_once "../config.php";
+require ".." . DIRECTORY_SEPARATOR . 'class' . DIRECTORY_SEPARATOR . 'Autoloader.php';
+Autoloader::register();
+session_start();
+$film = new Films();
+$value = '';
 
-$annee = htmlspecialchars($_GET['annee'], ENT_QUOTES, 'UTF-8');
+if (isset($_GET['titre'])) {
+    $titre_film = $_GET['titre'];
+    $value = $film->getTitreById($titre_film);
+} elseif (isset($_GET['annee'])) {
+    $annee = $_GET['annee'];
+    $value = $film->getYearById($annee);
+} elseif (isset($_GET['synopsis'])) {
+    $synopsis = $_GET['synopsis'];
+    $value = $film->getSynopsisById($synopsis);
+} elseif (isset($_GET['tag'])){
+    $tag =  $_GET['tag'];
+    $liste = $film->getTagsById($tag);
+    $value = htmlspecialchars(implode(" , ", $liste), ENT_QUOTES, 'UTF-8');
+} elseif(isset($_GET['realName'])) {
+    $num_real = $film->getNumRealById($_GET['realName']);
+    $value = $film->getNomReal($num_real);
+}
 ?>
+<?php ob_start() ?>
 
 <div class="container_acteur_form">
     <div class="sub-container">
         <div class="sub-container_2">
-            <?php if (!empty($title)) { ?>
-                <form id="acteur-form" method="POST" enctype="multipart/form-data"
-                    action="modif_donnees.php?titre=<?php echo $titre_film; ?>&title=<?= urlencode($title) ?>">
-                    <legend class="title-form-acteur">Modification</legend>
-                    <div class="mb-3 ">
-
-                        <label for="modif" class="form-label neon">titre</label>
-                        <label for="modif" class="form-label neon">titre</label>
-                        <span id="name-error" class="error-message"></span>
-                        <input type="text" class="form-control name-acteur" id="modif" name="modif" aria-describedby="name"
-                            value="<?= $title ?>">
-
-
-                    </div>
-                <?php }
-            ?>
-                <?php if (!empty($annee)) { ?>
-                    <form id="acteur-form" method="POST" enctype="multipart/form-data"
-                        action="modif_donnees.php?titre=<?php echo $titre_film; ?>&annee=<?= urlencode($annee) ?>">
-                        <legend class="title-form-acteur">Modification</legend>
-                        <div class="mb-3 ">
-
-                            <?php if (isset($annee)) { ?>
-                                <label for="modif" class="form-label neon">annee</label>
-                                <label for="modif" class="form-label neon">annee</label>
-                                <span id="name-error" class="error-message"></span>
-                                <input type="text" class="form-control name-acteur" id="modif" name="modif"
-                                    aria-describedby="name" value="<?= $annee ?>">
-                            <?php }
-                            ?>
-
-
-
-                        </div>
-                    <?php }
-                ?>
-                    <div class="sub-form-acteur">
-                        <button type="submit" class="btn sub">Submit</button>
-                        <button type="reset" class="btn sub res">Reset</button>
-                    </div>
-                </form>
+            <form id="acteur-form" method="POST" enctype="multipart/form-data" action=
+                <?php if(isset($titre_film)): ?>
+                    "modif_titre.php?titre=<?= $titre_film; ?>"
+                    <?php $val = "Titre";?>
+                <?php elseif (isset($annee)): ?>
+                    "modif_annee.php?annee=<?= $annee; ?>"
+                    <?php $val = "Annee";?>
+                <?php elseif (isset($synopsis)): ?>
+                    "modif_synopsis.php?synopsis=<?= htmlspecialchars($synopsis); ?>"
+                    <?php $val = "Synopsis";?>
+                <?php elseif (isset($tag)): ?>
+                    "modif_tag.php?tag=<?= htmlspecialchars($tag); ?>"
+                    <?php $val = "Tags";?>
+                <?php elseif (isset($num_real)): ?>
+                    "modif_real_name.php?num_real=<?= htmlspecialchars($num_real); ?>"
+                    <?php $val = "Nom";?>
+                <?php endif; ?>>
+               
+                <div class="mb-3">
+                    <label for="modif" class="form-label neon"><?= $val;?></label>
+                    <span id="name-error" class="error-message"></span>
+                    <?php if($val != "Synopsis"):?>
+                    <input type="text" class="form-control name-acteur" id="modif" name="modif" value="<?= $value ?>">
+                    <?php else:?>
+                        <textarea class="form-control name-acteur" id="modif" name="modif" rows="5"
+                                ><?= $value ;?></textarea>
+                    <?php endif;?>
+                </div>
+                <div class="sub-form-acteur">
+                    <button type="submit" class="btn sub">Submit</button>
+                    <button type="reset" class="btn sub res">Reset</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -85,3 +100,6 @@ $annee = htmlspecialchars($_GET['annee'], ENT_QUOTES, 'UTF-8');
         });
     });
 </script>
+
+<?php $content = ob_get_clean(); ?>
+<?php Template::render($content); ?>
