@@ -55,6 +55,15 @@ class Realisateurs extends PdoWrapper
         return $res[0]->num_real;
     }
 
+    public function getNomReal($num_real)
+    {
+        $req = "SELECT nom_real FROM realisateur WHERE num_real = :num_real";
+        $para = ["num_real" => $num_real];
+        $res = $this->exec($req, $para, "Realisateur");
+
+        return isset($res[0]) ? $res[0]->nom_real : null;
+    }
+
     public function getFilmReal($nom_real)
     {
         $req = "select Films.* from realisateur inner join Films on Films.num_real=" . $this->getNumReal($nom_real);
@@ -70,6 +79,19 @@ class Realisateurs extends PdoWrapper
         $para = ["nomRealisateur" => $nomRealisateur];
         return $this->exec($req, $para, "Film");
     }
+
+    public function realisateurExist($nomRealisateur)
+{
+    $req = "SELECT COUNT(*) AS count FROM realisateur WHERE nom_real = :nomRealisateur";
+    $params = ["nomRealisateur" => $nomRealisateur];
+    $result = $this->exec($req, $params);
+
+    if ($result[0]->count > 0) {
+        return true; // Le réalisateur existe
+    } else {
+        return false; // Le réalisateur n'existe pas
+    }
+}
 
     public function getRealisateur($nom_realisateur)
     {
@@ -89,8 +111,8 @@ class Realisateurs extends PdoWrapper
 
     private function remove_real_from_csv($nom_real)
     {
-        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/realisateur.csv';
-        $tempFile = '/home/youcef/Bureau/WEB/yacine3/csv/temp_acteur.csv';
+        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/realisateur.csv';
+        $tempFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/temp_acteur.csv';
 
         if (file_exists($csvFile)) {
             if (($inputFile = fopen($csvFile, 'r')) !== false) {

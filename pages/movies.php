@@ -6,8 +6,11 @@ session_start();
 
 if (isset($_GET['nom_film'])) {
     $nomFilm = $_GET['nom_film'];
-    $filmDetails = (new Film())->getFilm($nomFilm);
-    $num_film = $filmDetails->num_film;
+    $film = new Film();
+    if($film->existeFilm($nomFilm)){
+        $filmDetails = $film->getFilm($nomFilm);
+        $num_film = $filmDetails->num_film;
+    }
 }
 
 
@@ -82,14 +85,16 @@ if (isset($_GET['nom_film'])) {
     </header>
 
     <div class="container-movie">
-        <a href="modif.php?background=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill"
-                viewBox="0 0 16 16">
-                <path
-                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-            </svg>
-            Modifier le background</a>
-
+        <?php if (isset($_SESSION['username']) && !empty($filmDetails)): ?>
+            <a href="modif.php?background=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                </svg>
+                Modifier le background
+            </a>
+        <?php endif; ?>
         <?php if (isset($filmDetails) && $filmDetails): ?>
             <div class="infoMovie1">
                 <div class="infoMovie2">
@@ -153,6 +158,7 @@ if (isset($_GET['nom_film'])) {
                             <path fill-rule="evenodd"
                                 d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
                         </svg>
+           
                         <?php if ($filmDetails->est_regarde == 0): ?>
                             <svg id="not-seen-icon-<?= $filmDetails->num_film ?>" xmlns="http://www.w3.org/2000/svg" width="50"
                                 height="50" fill="currentColor" class="bi2" viewBox="0 0 16 16">
@@ -197,16 +203,16 @@ if (isset($_GET['nom_film'])) {
                                 </a>
                             <?php endif; ?>
                         </span>
-                        <img src="<?= "../images/realisateurs/" . htmlspecialchars($filmDetails->getNomImgReal(), ENT_QUOTES, 'UTF-8') ?>"
-                            alt="Réalisateur">
-                        <a href="modif.php?image=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-                            </svg>
-                        </a>
-
+                        <img src="<?= "../images/realisateurs/" . htmlspecialchars($filmDetails->getNomImgReal(), ENT_QUOTES, 'UTF-8') ?>" alt="Réalisateur">
+                        <?php if (isset($_SESSION['username'])): ?>
+                            <a href="modif.php?image=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                </svg>
+                            </a>
+                        <?php endif; ?>
                     </div>
 
 
@@ -250,35 +256,45 @@ if (isset($_GET['nom_film'])) {
         <?php endif; ?>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Gérer la suppression des acteurs
-        document.querySelectorAll('.c').forEach(icon => {
-            icon.addEventListener('click', function () {
-                let actorId = this.id.replace('delete-icon-', '');
-                deleteActor(actorId);
-            });
-        });
-
-        // Gérer la suppression des films
-        let deleteIcon = document.querySelector('.delete-test');
-        deleteIcon.addEventListener('click', function () {
-            let filmTitle = this.id.replace('delete-icon-', '');
-            deleteFilm(filmTitle);
-        });
-
-        // Gérer l'ajout de films à la watchlist
-        let addIcon = document.querySelector('.add-test');
-        addIcon.addEventListener('click', function () {
-            let filmTitle = this.id.replace('add-icon-', '');
-            addFilmToWatchlist(filmTitle);
-        });
-
-        let seeIcon = document.querySelector('.bi2');
-        seeIcon.addEventListener('click', function () {
-            let filmNum = this.id.split('-').pop();;
-            updateFilmStatus(filmNum);
+    // Gérer la suppression des acteurs
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.c').forEach(icon => {
+        icon.addEventListener('click', function () {
+            let actorId = this.id.replace('delete-icon-', '');
+            deleteActor(actorId);
         });
     });
+});
+
+// Gérer la suppression des films
+document.addEventListener('DOMContentLoaded', function () {
+    let deleteIcon = document.querySelector('.delete-test');
+    deleteIcon.addEventListener('click', function () {
+        let filmTitle = this.id.replace('delete-icon-', '');
+        deleteFilm(filmTitle);
+    });
+});
+
+// Gérer l'ajout de films à la watchlist
+document.addEventListener('DOMContentLoaded', function () {
+    let addIcon = document.querySelector('.add-test');
+    console.log(addIcon);
+    addIcon.addEventListener('click', function () {
+        let filmTitle = this.id.replace('add-icon-', '');
+        console.log(filmTitle);
+        addFilmToWatchlist(filmTitle);
+    });
+});
+
+// Gérer la mise à jour du statut d'un film
+document.addEventListener('DOMContentLoaded', function () {
+    let seeIcon = document.querySelector('.bi2');
+    seeIcon.addEventListener('click', function () {
+        let filmNum = this.id.split('-').pop();
+        console.log(filmNum);
+        updateFilmStatus(filmNum);
+    });
+});
 
     function deleteActor(actorId) {
         let filmId = <?= json_encode($num_film) ?>;

@@ -61,7 +61,18 @@ class Film extends PdoWrapper
     }
 
    
-
+    public function existeFilm($titre)
+    {
+        $req = "SELECT COUNT(*) AS count FROM Films WHERE titre_film = :titre";
+        $params = ['titre' => $titre];
+        $result = $this->exec($req, $params);
+    
+        if ($result && $result[0]->count > 0) {
+            return true; // Le film existe
+        } else {
+            return false; // Le film n'existe pas
+        }
+    }
 
     public function getNumFilm($nomFilm)
     {

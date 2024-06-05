@@ -61,4 +61,21 @@
 
     </form>
 
+    <form class="filter-form" action="search_filtre.php" method="get">
+    <div class="filter-bar">
+    <input type="text" id="year-input" name="year" placeholder="Année">
+    <input type="text" id="genre-input" name="genre" placeholder="Genre">
+    <input type="text" id="realisateur-input" name="realisateur" placeholder="Realisateur">
+    <input type="text" id="acteur-input" name="acteur" placeholder="acteur">
+    <div class="checkbox-container">
+        <label for="seen-checkbox">Vu</label>
+        <input type="checkbox" id="seen-checkbox" name="seen">
+    </div>
+    <button type="submit" class="filter-button">Filtrer</button>
+</div>
+
+</form>
+    <div id="search-results"></div>
+</form>
+
 </header>

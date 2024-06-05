@@ -137,7 +137,7 @@ class ActeurForm
         $this->gdb->add_actor_to_db($name, $imageFileName);
 
         // Read the CSV file to find the last num_act
-        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
+        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/acteur.csv';
         $lastId = 0;
         if (file_exists($csvFile)) {
             if (($handle = fopen($csvFile, 'r')) !== false) {

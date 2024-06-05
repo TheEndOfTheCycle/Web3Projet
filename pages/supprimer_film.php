@@ -18,6 +18,7 @@ if (isset($_GET['id'])) {
     // Envoyer une réponse JSON pour indiquer que la suppression s'est bien passée
     header('Content-Type: application/json');
     echo json_encode(['success' => true]);
+    
 } else {
     // Envoyer une réponse JSON pour indiquer qu'il manque l'identifiant de l'acteur
     header('Content-Type: application/json');

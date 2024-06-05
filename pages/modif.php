@@ -28,7 +28,14 @@ if (isset($_GET['titre'])) {
 }elseif(isset($_GET['background'])) {
     $background = $_GET['background'];
     $value = $film->getNomAfficheByFilmId($background);
+}elseif(isset($_GET['numeroReal'])) {
+    $numeroReal = $_GET['numeroReal'];
+    $value = $film->getNomReal($numeroReal);
+}elseif(isset($_GET['imageReal'])) {
+    $numeroRealImage = $_GET['imageReal'];
+    $value = $film->getNomReal($numeroRealImage);
 }
+
 ?>
 <?php ob_start() ?>
 
@@ -51,8 +58,14 @@ if (isset($_GET['titre'])) {
                 <?php elseif (isset($num_real)): ?>
                     "modif_real_name.php?num_real=<?= htmlspecialchars($num_real); ?>"
                     <?php $val = "Nom";?>
+                <?php elseif (isset($numeroReal)): ?>
+                    "modif_real_page_name.php?num_real=<?= htmlspecialchars($numeroReal); ?>"
+                    <?php $val = "Nom";?>
                 <?php elseif (isset($num_real_img)): ?>
                     "modif_real_image.php?image=<?= htmlspecialchars($num_real_img); ?>"
+                    <?php $val = "Image";?>
+                <?php elseif (isset($numeroRealImage)): ?>
+                    "modif_real_page_image.php?image=<?= htmlspecialchars($numeroRealImage); ?>"
                     <?php $val = "Image";?>
                 <?php elseif (isset($background)): ?>
                     "modif_background.php?background=<?= htmlspecialchars($background); ?>"

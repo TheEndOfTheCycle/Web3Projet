@@ -93,7 +93,7 @@ class Acteurs extends PdoWrapper
 
     private function add_actor_to_csv($nom_act, $nom_img)
     {
-        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
+        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/acteur.csv';
         $newId = $this->getNumAct($nom_act);
 
         // Write to CSV file
@@ -109,7 +109,7 @@ class Acteurs extends PdoWrapper
 
     private function remove_actor_from_csv($nom_act)
     {
-        $csvFile = '/home/youcef/Bureau/WEB/yacine3/csv/acteur.csv';
+        $csvFile = 'C:/Program Files/MySQL/MySQL Server 8.0/Uploads/acteur.csv';
         $tempFile = tempnam(sys_get_temp_dir(), 'csv');
 
         if (file_exists($csvFile)) {
