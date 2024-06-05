@@ -226,6 +226,22 @@ class Films extends PdoWrapper
 
         return $res ? $res[0]->num_real : null;
     }
+    public function getNomAfficheByFilmId($numFilm)
+    {
+        // Requête SQL pour récupérer le nom de l'image d'un film à partir de son ID
+        $req = "SELECT nom_affiche FROM Films WHERE num_film = :numFilm LIMIT 1";
+        $params = ["numFilm" => $numFilm];
+        $res = $this->exec($req, $params);
+
+        return $res[0]->nom_affiche;
+    }
+    public function updateImageByNumFilm($numFilm, $newImageName)
+    {
+        // Requête SQL pour mettre à jour le nom de l'image d'un film à partir de son ID
+        $req = "UPDATE Films SET nom_affiche = :newImageName WHERE num_film = :numFilm";
+        $params = ["newImageName" => $newImageName, "numFilm" => $numFilm];
+        $this->exec($req, $params);
+    }
     public function getNomReal($num_real)
     {
         $req = "SELECT nom_real FROM realisateur WHERE num_real = :num_real";

@@ -82,6 +82,14 @@ if (isset($_GET['nom_film'])) {
     </header>
 
     <div class="container-movie">
+        <a href="modif.php?background=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill"
+                viewBox="0 0 16 16">
+                <path
+                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+            </svg>
+            Modifier le background</a>
+
         <?php if (isset($filmDetails) && $filmDetails): ?>
             <div class="infoMovie1">
                 <div class="infoMovie2">
@@ -191,13 +199,13 @@ if (isset($_GET['nom_film'])) {
                         </span>
                         <img src="<?= "../images/realisateurs/" . htmlspecialchars($filmDetails->getNomImgReal(), ENT_QUOTES, 'UTF-8') ?>"
                             alt="Réalisateur">
-                            <a href="modif.php?image=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
-                                    </svg>
-                                </a>
+                        <a href="modif.php?image=<?= urlencode($filmDetails->num_film) ?>" class="stylo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                            </svg>
+                        </a>
 
                     </div>
 
@@ -240,109 +248,109 @@ if (isset($_GET['nom_film'])) {
         <?php else: ?>
             <p>Film non trouvé.</p>
         <?php endif; ?>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Gérer la suppression des acteurs
-            document.querySelectorAll('.c').forEach(icon => {
-                icon.addEventListener('click', function () {
-                    let actorId = this.id.replace('delete-icon-', '');
-                    deleteActor(actorId);
-                });
-            });
-
-            // Gérer la suppression des films
-            let deleteIcon = document.querySelector('.delete-test');
-            deleteIcon.addEventListener('click', function () {
-                let filmTitle = this.id.replace('delete-icon-', '');
-                deleteFilm(filmTitle);
-            });
-
-            // Gérer l'ajout de films à la watchlist
-            let addIcon = document.querySelector('.add-test');
-            addIcon.addEventListener('click', function () {
-                let filmTitle = this.id.replace('add-icon-', '');
-                addFilmToWatchlist(filmTitle);
-            });
-
-            let seeIcon = document.querySelector('.bi2');
-            seeIcon.addEventListener('click', function () {
-                let filmNum = this.id.split('-').pop();;
-                updateFilmStatus(filmNum);
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Gérer la suppression des acteurs
+        document.querySelectorAll('.c').forEach(icon => {
+            icon.addEventListener('click', function () {
+                let actorId = this.id.replace('delete-icon-', '');
+                deleteActor(actorId);
             });
         });
 
-        function deleteActor(actorId) {
-            let filmId = <?= json_encode($num_film) ?>;
-            fetch('supprimer_acteur_film.php?id=' + actorId + '&num_film=' + filmId, {
-                method: 'GET'
+        // Gérer la suppression des films
+        let deleteIcon = document.querySelector('.delete-test');
+        deleteIcon.addEventListener('click', function () {
+            let filmTitle = this.id.replace('delete-icon-', '');
+            deleteFilm(filmTitle);
+        });
+
+        // Gérer l'ajout de films à la watchlist
+        let addIcon = document.querySelector('.add-test');
+        addIcon.addEventListener('click', function () {
+            let filmTitle = this.id.replace('add-icon-', '');
+            addFilmToWatchlist(filmTitle);
+        });
+
+        let seeIcon = document.querySelector('.bi2');
+        seeIcon.addEventListener('click', function () {
+            let filmNum = this.id.split('-').pop();;
+            updateFilmStatus(filmNum);
+        });
+    });
+
+    function deleteActor(actorId) {
+        let filmId = <?= json_encode($num_film) ?>;
+        fetch('supprimer_acteur_film.php?id=' + actorId + '&num_film=' + filmId, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    console.error('Erreur lors de la suppression de l\'acteur');
+                }
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    } else {
-                        console.error('Erreur lors de la suppression de l\'acteur');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la suppression de l\'acteur :', error);
-                });
-        }
+            .catch(error => {
+                console.error('Erreur lors de la suppression de l\'acteur :', error);
+            });
+    }
 
-        function deleteFilm(filmTitle) {
-            fetch('supprimer_film.php?id=' + filmTitle, {
-                method: 'GET'
+    function deleteFilm(filmTitle) {
+        fetch('supprimer_film.php?id=' + filmTitle, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Erreur lors de la suppression du film');
+                }
             })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error('Erreur lors de la suppression du film');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la suppression du film :', error);
-                });
-        }
+            .catch(error => {
+                console.error('Erreur lors de la suppression du film :', error);
+            });
+    }
 
-        function addFilmToWatchlist(filmTitle) {
-            fetch('ajouter_film_liste.php?id=' + filmTitle, {
-                method: 'GET'
+    function addFilmToWatchlist(filmTitle) {
+        fetch('ajouter_film_liste.php?id=' + filmTitle, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error('Erreur lors de l\'ajout du film à la watchlist');
+                }
             })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error('Erreur lors de l\'ajout du film à la watchlist');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de l\'ajout du film à la watchlist :', error);
-                });
-        }
+            .catch(error => {
+                console.error('Erreur lors de l\'ajout du film à la watchlist :', error);
+            });
+    }
 
-        function updateFilmStatus(filmNum) {
-            // Envoyez une requête AJAX à la page seen_icon.php pour mettre à jour l'état du film
-            fetch('seen_icon.php?id=' + filmNum, {
-                method: 'GET'
+    function updateFilmStatus(filmNum) {
+        // Envoyez une requête AJAX à la page seen_icon.php pour mettre à jour l'état du film
+        fetch('seen_icon.php?id=' + filmNum, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (response.ok) {
+                    // La mise à jour s'est bien passée, vous pouvez rafraîchir la page ou mettre à jour l'icône
+                    window.location.reload(); // Rafraîchir la page
+                } else {
+                    // Gérer les erreurs de mise à jour
+                    console.error('Erreur lors de la mise à jour de l\'état du film');
+                }
             })
-                .then(response => {
-                    if (response.ok) {
-                        // La mise à jour s'est bien passée, vous pouvez rafraîchir la page ou mettre à jour l'icône
-                        window.location.reload(); // Rafraîchir la page
-                    } else {
-                        // Gérer les erreurs de mise à jour
-                        console.error('Erreur lors de la mise à jour de l\'état du film');
-                    }
-                })
-                .catch(error => {
-                    console.error('Erreur lors de la mise à jour de l\'état du film :', error);
-                });
-        }
+            .catch(error => {
+                console.error('Erreur lors de la mise à jour de l\'état du film :', error);
+            });
+    }
 
 
-    </script>
+</script>
 
-    <?php $content = ob_get_clean() ?>
-    <?php Template_movie::render($content) ?>
+<?php $content = ob_get_clean() ?>
+<?php Template_movie::render($content) ?>

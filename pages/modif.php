@@ -25,6 +25,9 @@ if (isset($_GET['titre'])) {
 }elseif(isset($_GET['image'])) {
     $num_real_img = $film->getNumRealById($_GET['image']);
     $value = $film->getNomAfficheByNumReal($num_real_img);
+}elseif(isset($_GET['background'])) {
+    $background = $_GET['background'];
+    $value = $film->getNomAfficheByFilmId($background);
 }
 ?>
 <?php ob_start() ?>
@@ -51,6 +54,9 @@ if (isset($_GET['titre'])) {
                 <?php elseif (isset($num_real_img)): ?>
                     "modif_real_image.php?image=<?= htmlspecialchars($num_real_img); ?>"
                     <?php $val = "Image";?>
+                <?php elseif (isset($background)): ?>
+                    "modif_background.php?background=<?= htmlspecialchars($background); ?>"
+                    <?php $val = "Background";?>
                 <?php endif; ?>>
                
                 <div class="mb-3">
@@ -58,7 +64,7 @@ if (isset($_GET['titre'])) {
                     <span id="name-error" class="error-message"></span>
                     <?php if($val === "Synopsis"):?>
                         <textarea class="form-control name-acteur" id="modif" name="modif" rows="5"><?= $value ;?></textarea>
-                    <?php elseif($val === "Image"):?>
+                    <?php elseif($val === "Image" || $val === "Background"):?>
                         <!-- Ajoutez un champ de fichier pour l'image -->
                         <input type="file" class="form-control name-acteur" id="modif_image" name="modif_image" accept="image/png, image/gif, image/jpeg">
                     <?php else:?> 
