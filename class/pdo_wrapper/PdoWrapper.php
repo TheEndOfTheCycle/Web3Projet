@@ -13,7 +13,7 @@ class PdoWrapper
     private $db_port ;
     private $pdo ;
 
-    public function __construct($db_name = 'webproject', $db_host='127.0.0.1', $db_port='3306', $db_user = 'root', $db_pwd='root'){
+    public function __construct($db_name = 'dataprojet', $db_host='127.0.0.1', $db_port='3306', $db_user = 'root', $db_pwd='Angra'){
         $this->db_name = $db_name ;
         $this->db_host = $db_host ;
         $this->db_port = $db_port ;

@@ -129,5 +129,10 @@ class Acteurs extends PdoWrapper
             rename($tempFile, $csvFile);
         }
     }
+    public function acteurEstreal()//retourne les acteurs qui sont des realisateurs
+    {
+        $req="SELECT * from acteur inner join realisateur on acteur.nom_act = realisateur.nom_real";
+        return $this->exec($req,null);
+    }
 }
 
