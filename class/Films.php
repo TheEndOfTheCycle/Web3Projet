@@ -235,6 +235,16 @@ class Films extends PdoWrapper
         return $res ? $res[0]->nom_real : null;
     }
 
+    public function getNomAfficheByNumReal($numReal)
+    {
+        $req = "SELECT nom_affiche FROM Films WHERE num_real = :numReal LIMIT 1";
+        $params = ["numReal" => $numReal];
+        $res = $this->exec($req, $params);
+
+        return $res ? $res[0]->nom_affiche : null;
+    }
+
+
 
     public function addTagToFilm($nomFilm, $nomTag)
     {

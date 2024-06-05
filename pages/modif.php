@@ -22,6 +22,9 @@ if (isset($_GET['titre'])) {
 } elseif(isset($_GET['realName'])) {
     $num_real = $film->getNumRealById($_GET['realName']);
     $value = $film->getNomReal($num_real);
+}elseif(isset($_GET['image'])) {
+    $num_real_img = $film->getNumRealById($_GET['image']);
+    $value = $film->getNomAfficheByNumReal($num_real_img);
 }
 ?>
 <?php ob_start() ?>
@@ -45,16 +48,21 @@ if (isset($_GET['titre'])) {
                 <?php elseif (isset($num_real)): ?>
                     "modif_real_name.php?num_real=<?= htmlspecialchars($num_real); ?>"
                     <?php $val = "Nom";?>
+                <?php elseif (isset($num_real_img)): ?>
+                    "modif_real_image.php?image=<?= htmlspecialchars($num_real_img); ?>"
+                    <?php $val = "Image";?>
                 <?php endif; ?>>
                
                 <div class="mb-3">
                     <label for="modif" class="form-label neon"><?= $val;?></label>
                     <span id="name-error" class="error-message"></span>
-                    <?php if($val != "Synopsis"):?>
-                    <input type="text" class="form-control name-acteur" id="modif" name="modif" value="<?= $value ?>">
-                    <?php else:?>
-                        <textarea class="form-control name-acteur" id="modif" name="modif" rows="5"
-                                ><?= $value ;?></textarea>
+                    <?php if($val === "Synopsis"):?>
+                        <textarea class="form-control name-acteur" id="modif" name="modif" rows="5"><?= $value ;?></textarea>
+                    <?php elseif($val === "Image"):?>
+                        <!-- Ajoutez un champ de fichier pour l'image -->
+                        <input type="file" class="form-control name-acteur" id="modif_image" name="modif_image" accept="image/png, image/gif, image/jpeg">
+                    <?php else:?> 
+                        <input type="text" class="form-control name-acteur" id="modif" name="modif" value="<?= $value ?>">
                     <?php endif;?>
                 </div>
                 <div class="sub-form-acteur">
@@ -65,7 +73,6 @@ if (isset($_GET['titre'])) {
         </div>
     </div>
 </div>
-
 
 
 
@@ -102,4 +109,4 @@ if (isset($_GET['titre'])) {
 </script>
 
 <?php $content = ob_get_clean(); ?>
-<?php Template::render($content); ?>
+<?php Template::render($content); ?> 

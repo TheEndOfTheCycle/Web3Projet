@@ -115,4 +115,12 @@ class Realisateurs extends PdoWrapper
         $params = ["newName" => $newName, "numReal" => $numReal];
         $this->exec($req, $params);
     }
+
+    public function updateImageByNumReal($numRealisateur, $newImageName)
+{
+    // Requête SQL pour mettre à jour le nom de l'image d'un réalisateur
+    $req = "UPDATE realisateur SET nom_img = :newImageName WHERE num_real = :numReal";
+    $params = ["newImageName" => $newImageName, "numReal" => $numRealisateur];
+    $this->exec($req, $params);
+}
 }
