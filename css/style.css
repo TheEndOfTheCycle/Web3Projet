@@ -361,6 +361,10 @@ nav ul li a:hover::after {
   flex: 1;
 }
 
+.titre_sous_image{
+  text-decoration: none;
+}
+
 /* ----------- Container -------- */
 
 .container-text {
