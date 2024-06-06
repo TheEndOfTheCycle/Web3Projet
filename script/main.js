@@ -75,14 +75,13 @@ document.addEventListener("DOMContentLoaded", function () {
     let searchInput = document.getElementById("search-input");
     let searchResult = document.getElementById("search-results");
 
-    if (computedStyle.display === "flex") {
-        searchForm.style.display = "none";
-        searchInput.value = "";
-        searchResult.innerHTML = "";
-        closeFilter(); // Appel de la fonction closeFilter() pour fermer également le filtre
-    }
-}
 
+    if (computedStyle.display === "flex") {
+      searchForm.style.display = "none";
+      searchInput.value = "";
+      searchResult.innerHTML = "";
+    }
+  }
 
   function scrollLeft(films) {
     films.scrollBy({
@@ -98,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-let searchForm = document.querySelector(".search-form");
+  let searchForm = document.querySelector(".search-form");
 let searchInput = document.getElementById("search-input");
 
 
@@ -115,10 +114,10 @@ searchInput.addEventListener("input", function () {
 // Fonction de recherche de films
 function searchFilms(searchInput) {
     // Construction de l'URL de recherche
+    let TabPara =searchInput.split(",");
     let url = "search.php";
-    let params = "?query=" + encodeURIComponent(searchInput);
+    let params = "?query=" + encodeURIComponent(TabPara[0]);
     let request = url + params;
-
     // Requête fetch
     fetch(request)
         .then(response => {
@@ -141,13 +140,16 @@ function displaySearchResults(results) {
     let searchResultsContainer = document.getElementById("search-results");
     searchResultsContainer.innerHTML = "";
 
-    if (results.length > 0) {
+    if (results.length > 0) {//on parcourt les resultats
         results.forEach(result => {
           console.log(result)
             let subContainer = document.createElement("a");
             subContainer.classList.add("sub-container-row");
-            subContainer.href = "movies.php?nom_film=" + encodeURIComponent(result.titre_film);            let resultItem = document.createElement("div");
+            let resultItem = document.createElement("div");            
             resultItem.classList.add("sub-container-movie-info");
+            let imgResult = document.createElement("img");
+            if(result.type=="Film")
+              {
             resultItem.innerHTML =
                 "<div>" +
                 result.titre_film +
@@ -156,8 +158,28 @@ function displaySearchResults(results) {
                 "</div> <div>" +
                 result.genre +
                 "</div>";
-            let imgResult = document.createElement("img");
-            imgResult.src = "../images/affiches/" + result.img_film;
+                subContainer.href="movies.php?nom_film="+result.titre_film
+                imgResult.src = "../images/affiches/" + result.img_film;
+              }
+              if(result.type=="Acteur")
+              {
+                resultItem.innerHTML =
+                "<div>" +
+                result.nom_act +
+                "</div>";
+                subContainer.href="acteur.php?nom_act=" +result.nom_act
+                imgResult.src = "../images/acteurs/" + result.img_act;
+              }
+              if(result.type=="Realisateur")
+                {
+                  resultItem.innerHTML =
+                  "<div>" +
+                  result.nom_real +
+                  "</div>";
+                  subContainer.href="realisateur.php?nom_real=" +result.nom_real
+                  imgResult.src = "../images/realisateurs/" + result.img_act;
+                }
+            
 
             subContainer.appendChild(imgResult);
             subContainer.appendChild(resultItem);

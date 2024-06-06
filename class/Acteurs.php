@@ -19,7 +19,11 @@ class Acteurs extends PdoWrapper
         $res = $this->exec($req, $para, "Acteur");
         return $res[0]->num_act;
     }
-   
+    public function acteurEstreal()//retourne les acteurs qui sont des realisateurs
+    {
+        $req="SELECT * from acteur inner join realisateur on acteur.nom_act = realisateur.nom_real";
+        return $this->exec($req,null);
+    }
     
 
 

@@ -60,21 +60,34 @@ class Trie extends PdoWrapper
         $Breals = new Realisateurs();
 
         $query = "SELECT DISTINCT * FROM Films
-              LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
-              LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
-              LEFT JOIN jouer ON jouer.num_film = Films.num_film
-              LEFT JOIN acteur ON acteur.num_act = jouer.num_act
-              LEFT JOIN realisateur ON realisateur.num_real = Films.num_real
+              cross JOIN film_tag ON Films.num_film = film_tag.num_film
+              cross JOIN tags ON tags.num_tag = film_tag.num_tag
+              cross JOIN jouer ON jouer.num_film = Films.num_film
+              cross JOIN acteur ON acteur.num_act = jouer.num_act
+              cross JOIN realisateur ON realisateur.num_real = Films.num_real
               WHERE Films.titre_film LIKE :searchTerm
                  OR tags.nom_tag LIKE :searchTerm
                  OR acteur.nom_act LIKE :searchTerm
-                 OR realisateur.nom_real LIKE :searchTerm";
+                 OR realisateur.nom_real LIKE :searchTerm
+                 GROUP BY Films.num_film, Films.titre_film";
+                 
 
         $params = array(':searchTerm' => '%' . $searchTerm . '%');
 
         return $this->exec($query, $params, "Film");
     }
-
+    public function searchActor($searchName)
+    {
+        $req="SELECT * FROM acteur where nom_act LIKE :nomA";
+        $para= ["nomA" =>'%' . $searchName . '%'];
+        return $this->exec($req,$para,"Acteur");
+    }
+    public function searchReal($searchName)
+    {
+        $req= "SELECT * from realisateur where nom_real LIKE :nomR";
+        $para =["nomR" =>'%' . $searchName . '%'];
+       return $this->exec($req,$para,"Realisateur");
+    }
     public function getMoviesByYearAndGenre($year, $genre)
 {
     $query = "SELECT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche

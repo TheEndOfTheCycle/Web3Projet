@@ -3,21 +3,28 @@
 require_once "../config.php";
 require "../class/Autoloader.php";
 Autoloader::register();
+$trie = new Trie();
+$Bacts = new Acteurs();
+function debug_to_console($data) {
+    $output = $data;
+    if (is_array($output))
+        $output = implode(',', $output);
+
+    echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
+}
+
+
 
 // Vérifier si le terme de recherche est présent dans les paramètres GET
-if (isset($_GET['query'])) {
+if (isset($_GET['query'])  ) {
     $query = trim($_GET['query']);
 
     // Vérifier que le terme de recherche n'est pas vide
     if (!empty($query)) {
-        // Créer une instance de la classe Trie
-        $trie = new Trie();
-
-
         // Effectuer la recherche de films
-        $resultAll = $trie->searchMovies($query);
-       
-
+        $resultAll = $trie->searchMovies($query);//on cherche les films
+        $resultAllActs =$trie->searchActor($query);//on cherche les acteurs
+        $resultAllReal =$trie->searchReal($query);//on cherche les reals
         // Vérifier si des résultats ont été trouvés
         if ($resultAll !== false && !empty($resultAll)) {
             // Convertir les résultats en un tableau associatif approprié pour le JSON
@@ -28,6 +35,43 @@ if (isset($_GET['query'])) {
                     'img_film' => htmlspecialchars($result->nom_affiche, ENT_QUOTES, 'UTF-8'),
                     'anSortie_film' => htmlspecialchars($result->anSortie_film, ENT_QUOTES, 'UTF-8'),
                     'genre' => htmlspecialchars($result->genre_film, ENT_QUOTES, 'UTF-8'), // Il serait préférable de rendre ce champ dynamique
+                    'type' =>"Film",
+                );
+            }
+            foreach ($resultAllActs as $result) {
+                foreach($Bacts->acteurEstreal() as $res)
+                {
+                    $TnameAct=$result->nom_act;
+
+                    if($res->nom_act==$result->nom_act)
+                    {
+                        $TnameAct =$TnameAct . " (Acteur)";
+                        break;
+                    }
+                   
+                }
+                $jsonResults[] = array(
+                    'nom_act' => htmlspecialchars($TnameAct, ENT_QUOTES, 'UTF-8'),
+                    'type' => "Acteur",
+                    'img_act' =>htmlspecialchars($result->nom_img, ENT_QUOTES, 'UTF-8'),
+                );
+            }
+            foreach($resultAllReal as $result)
+            {
+                foreach($Bacts->acteurEstreal() as $res)
+                {
+                    $TrealName=$result->nom_real;
+                    if($res->nom_real==$result->nom_real)
+                    {
+                        $TrealName=$TrealName . " (Realisateur)";
+                        break;
+                    }
+                }
+                $jsonResults[] = array(
+                    'nom_real' => htmlspecialchars($TrealName, ENT_QUOTES, 'UTF-8'),
+                    'type' => "Realisateur",
+                    'img_real' =>htmlspecialchars($result->nom_img, ENT_QUOTES, 'UTF-8'),
+                
                 );
             }
 
@@ -43,8 +87,7 @@ if (isset($_GET['query'])) {
         http_response_code(400);
         echo json_encode(array('error' => 'Empty search query provided'));
     }
-} else {
-    // Aucun terme de recherche fourni
-    http_response_code(400);
-    echo json_encode(array('error' => 'No search query provided'));
-}
+} 
+   
+
+
