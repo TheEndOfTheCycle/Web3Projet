@@ -1,5 +1,4 @@
 <?php
-require_once "../config.php";
 
 use pdo_wrapper\PdoWrapper;
 
