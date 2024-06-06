@@ -143,4 +143,12 @@ class Realisateurs extends PdoWrapper
         $params = ["directorName" => '%' . trim($directorName) . '%'];
         return $this->exec($req, $params, 'Realisateur');
     }
+    public function getNomReal($num_real)
+    {
+        $req = "SELECT nom_real FROM realisateur WHERE num_real = :num_real";
+        $para = ["num_real" => $num_real];
+        $res = $this->exec($req, $para, "Realisateur");
+
+        return isset($res[0]) ? $res[0]->nom_real : null;
+    }
 }

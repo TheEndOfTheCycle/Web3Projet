@@ -159,65 +159,59 @@ public function getMoviesByGenre($genre)
     }
 
 
-// Nouvelle méthode pour récupérer les films par réalisateur, genre et année// Nouvelle méthode pour récupérer les films par réalisateur, genre et année
-// Nouvelle méthode pour récupérer les films par réalisateur, genre et année
-public function getMoviesByDirectorIdGenreYear($directorId, $genre, $year, $seen, $actorIds)
-{
-    $query = "SELECT DISTINCT Films.titre_film, realisateur.num_real, Films.anSortie_film, Films.genre_film, Films.nom_affiche
-        FROM Films
-        INNER JOIN realisateur ON realisateur.num_real = Films.num_real
-        INNER JOIN film_tag ON Films.num_film = film_tag.num_film
-        INNER JOIN tags ON tags.num_tag = film_tag.num_tag
-        WHERE 1=1";
-
-    $params = [];
-
-    if ($directorId !== -1) {
-        if (!empty($directorId)) {
-            $query .= " AND Films.num_real = :directorId";
-            $params[':directorId'] = $directorId;
-        }
-    } else {
-        // Si $directorId est égal à -1, ne récupérer aucun film
-        $query .= " AND 1=0";
-    }
-
-    if (!empty($genre)) {
-        $query .= " AND Films.genre_film LIKE :genre";
-        $params[':genre'] = '%' . $genre . '%';
-    }
-
-    if (!empty($year)) {
-        $query .= " AND Films.anSortie_film = :year";
-        $params[':year'] = $year;
-    }
-
-    if (!empty($seen)) {
-        $query .= " AND Films.est_regarde = :seen";
-        $params[':seen'] = $seen ? 1 : 0;
-    }
-
-    if (!empty($actorIds)) {
-        $actorConditions = [];
-        foreach ($actorIds as $index => $actorId) {
-            $placeholder = ":actorId$index";
-            $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE num_film = Films.num_film AND num_act = $placeholder)";
-            $params[$placeholder] = $actorId;
-        }
-
-        $actorConditionStr = implode(' AND ', $actorConditions);
-        $query .= " AND $actorConditionStr";
-    }
-
-    // Si tous les paramètres sont vides, récupérer tous les films
-    if (empty($directorId) && empty($genre) && empty($year) && empty($seen) && empty($actorIds)) {
-        $query = "SELECT DISTINCT Films.titre_film, realisateur.num_real, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+    public function getMoviesByDirectorIdGenreYear($directorIds, $genres, $year, $seen, $actorIds)
+    {
+        $query = "SELECT DISTINCT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche, realisateur.num_real
             FROM Films
-            INNER JOIN realisateur ON realisateur.num_real = Films.num_real";
+            INNER JOIN realisateur ON realisateur.num_real = Films.num_real
+            LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
+            LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
+            WHERE 1=1";
+    
+        $params = [];
+    
+        if (!empty($directorIds)) {
+            $placeholders = implode(',', array_fill(0, count($directorIds), '?'));
+            $query .= " AND Films.num_real IN ($placeholders)";
+            $params = array_merge($params, $directorIds);
+        }
+    
+        if (!empty($year)) {
+            $query .= " AND Films.anSortie_film = ?";
+            $params[] = $year;
+        }
+    
+        if (!empty($genres)) {
+            if (is_string($genres)) {
+                $genres = explode(',', $genres);
+                $genres = array_map('trim', $genres); // Supprimer les espaces inutiles
+            }
+    
+            $genreConditions = [];
+            foreach ($genres as $index => $genre) {
+                $genreConditions[] = "Films.genre_film LIKE ?";
+                $params[] = '%' . $genre . '%';
+            }
+            $query .= " AND (" . implode(' AND ', $genreConditions) . ")";
+        }
+    
+        if ($seen !== '') {
+            $query .= " AND Films.est_regarde = ?";
+            $params[] = $seen ? 1 : 0;
+        }
+    
+        if (!empty($actorIds)) {
+            $actorConditions = [];
+            foreach ($actorIds as $actorId) {
+                $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE jouer.num_film = Films.num_film AND jouer.num_act = ?)";
+                $params[] = $actorId;
+            }
+            $query .= " AND (" . implode(' AND ', $actorConditions) . ")";
+        }
+    
+        return $this->exec($query, $params, "Film");
     }
-
-    return $this->exec($query, $params, "Film");
-}
+    
 
 
 }

@@ -5,31 +5,58 @@ Autoloader::register();
 session_start();
 $film = new Films();
 $value = '';
+$val = ''; // Initialisation de la variable $val
 
 if (isset($_GET['titre'])) {
     $titre_film = $_GET['titre'];
     $value = $film->getTitreById($titre_film);
+    $val = "Titre";
 } elseif (isset($_GET['annee'])) {
     $annee = $_GET['annee'];
     $value = $film->getYearById($annee);
+    $val = "Annee";
 } elseif (isset($_GET['synopsis'])) {
     $synopsis = $_GET['synopsis'];
     $value = $film->getSynopsisById($synopsis);
+    $val = "Synopsis";
 } elseif (isset($_GET['tag'])){
     $tag =  $_GET['tag'];
     $liste = $film->getTagsById($tag);
     $value = htmlspecialchars(implode(" , ", $liste), ENT_QUOTES, 'UTF-8');
+    $val = "Tags";
 } elseif(isset($_GET['realName'])) {
     $num_real = $film->getNumRealById($_GET['realName']);
     $value = $film->getNomReal($num_real);
-}elseif(isset($_GET['image'])) {
+    $val = "Nom";
+} elseif(isset($_GET['image'])) {
     $num_real_img = $film->getNumRealById($_GET['image']);
     $value = $film->getNomAfficheByNumReal($num_real_img);
-}elseif(isset($_GET['background'])) {
+    $val = "Image";
+} elseif(isset($_GET['background'])) {
     $background = $_GET['background'];
     $value = $film->getNomAfficheByFilmId($background);
+    $val = "Background";
+} elseif(isset($_GET['numeroReal'])) {
+    $numeroReal = $_GET['numeroReal'];
+    $value = $film->getNomReal($numeroReal);
+    $val = "Nom";
+} elseif(isset($_GET['imageReal'])) {
+    $numeroRealImage = $_GET['imageReal'];
+    $value = $film->getNomReal($numeroRealImage);
+    $val = "Image";
+} elseif(isset($_GET['numAct'])) {
+    $acteur = new Acteurs();
+    $numeroAct = $_GET['numAct'];
+    $value =  $acteur->getNomActeur($numeroAct);
+    $val = "Nom";
+} elseif(isset($_GET['imageAct'])) {
+    $acteur = new Acteurs();
+    $numeroActImage = $_GET['imageAct'];
+    $value =  $acteur->getNomImagebyId($numeroActImage);
+    $val = "Image";
 }
 ?>
+
 <?php ob_start() ?>
 
 <div class="container_acteur_form">
@@ -38,25 +65,26 @@ if (isset($_GET['titre'])) {
             <form id="acteur-form" method="POST" enctype="multipart/form-data" action=
                 <?php if(isset($titre_film)): ?>
                     "modif_titre.php?titre=<?= $titre_film; ?>"
-                    <?php $val = "Titre";?>
                 <?php elseif (isset($annee)): ?>
                     "modif_annee.php?annee=<?= $annee; ?>"
-                    <?php $val = "Annee";?>
                 <?php elseif (isset($synopsis)): ?>
                     "modif_synopsis.php?synopsis=<?= htmlspecialchars($synopsis); ?>"
-                    <?php $val = "Synopsis";?>
                 <?php elseif (isset($tag)): ?>
                     "modif_tag.php?tag=<?= htmlspecialchars($tag); ?>"
-                    <?php $val = "Tags";?>
                 <?php elseif (isset($num_real)): ?>
                     "modif_real_name.php?num_real=<?= htmlspecialchars($num_real); ?>"
-                    <?php $val = "Nom";?>
+                <?php elseif (isset($numeroReal)): ?>
+                    "modif_real_page_name.php?num_real=<?= htmlspecialchars($numeroReal); ?>"
+                <?php elseif (isset($numeroAct)): ?>
+                    "modif_acteur_page_name.php?num_act=<?= htmlspecialchars($numeroAct); ?>"
                 <?php elseif (isset($num_real_img)): ?>
                     "modif_real_image.php?image=<?= htmlspecialchars($num_real_img); ?>"
-                    <?php $val = "Image";?>
+                <?php elseif (isset($numeroRealImage)): ?>
+                    "modif_real_page_image.php?image=<?= htmlspecialchars($numeroRealImage); ?>"
                 <?php elseif (isset($background)): ?>
                     "modif_background.php?background=<?= htmlspecialchars($background); ?>"
-                    <?php $val = "Background";?>
+                <?php elseif (isset($numeroActImage)): ?>
+                    "modif_acteur_page_image.php?image=<?= htmlspecialchars($numeroActImage); ?>"
                 <?php endif; ?>>
                
                 <div class="mb-3">
@@ -65,8 +93,8 @@ if (isset($_GET['titre'])) {
                     <?php if($val === "Synopsis"):?>
                         <textarea class="form-control name-acteur" id="modif" name="modif" rows="5"><?= $value ;?></textarea>
                     <?php elseif($val === "Image" || $val === "Background"):?>
-                        <!-- Ajoutez un champ de fichier pour l'image -->
                         <input type="file" class="form-control name-acteur" id="modif_image" name="modif_image" accept="image/png, image/gif, image/jpeg">
+                        <img id="preview" src="#" alt="Image preview" style="display: none; max-width: 200px; max-height: 200px;">
                     <?php else:?> 
                         <input type="text" class="form-control name-acteur" id="modif" name="modif" value="<?= $value ?>">
                     <?php endif;?>
@@ -80,14 +108,31 @@ if (isset($_GET['titre'])) {
     </div>
 </div>
 
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         let form = document.getElementById("acteur-form");
         let name = document.getElementById("modif");
         let nameError = document.getElementById("name-error");
 
+        // Prévisualisation de l'image
+        document.getElementById('modif_image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                const preview = document.getElementById('preview');
+                preview.src = '#';
+                preview.style.display = 'none';
+            }
+        });
+
+        // Validation du formulaire
         form.addEventListener('submit', function (ev) {
             let hasError = false;
             nameError.textContent = "";

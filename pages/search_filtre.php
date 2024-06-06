@@ -20,27 +20,50 @@ $actorIds = [];
 /// Récupérer les IDs des acteurs dont le nom contient la chaîne de caractères entrée
 if (!empty($actorName)) {
     $acteur = new Acteurs();
-    $actors = explode(',', $actorName);
+    $actors = array_map('trim', explode(',', $actorName));
+    $actorIds = [];
+
     foreach ($actors as $actor) {
-        $actord = $acteur->searchActors($actor); 
-        $trimmedName = trim($actord->nom_act);
-        if(!empty($trimmedName)){ // Vérifier si la chaîne n'est pas vide après le trim
-            $actorIds[] = $acteur->getNumAct($trimmedName);
+        if (!empty($actor)) {
+            $actorResults = $acteur->searchActors($actor);
+            if (!empty($actorResults)) {
+                foreach ($actorResults as $actorObj) {
+                    $trimmedName = trim($actorObj->nom_act);
+                    if (!empty($trimmedName)) {
+                        $numAct = $acteur->getNumAct($trimmedName);
+                        if ($numAct !== null) {
+                            $actorIds[] = $numAct;
+                        } else {
+                            $actorIds[] = -1;
+                        }
+                    }
+                }
+            } else {
+                $actorIds[] = -1;
+            }
         }
-        
     }
+} else {
+    $actorIds = [];
 }
 
 
 // Récupérer les IDs des réalisateurs dont le nom contient la chaîne de caractères entrée
-if (!empty($directorName)) {
+if(!empty($directorName)){
     $realisateur = new Realisateurs();
-    $directors = $realisateur->searchDirectors($directorName); 
-    foreach ($directors as $director) {
-        $numReal[] = $director->num_real;
+    $real = $realisateur->searchDirectors($directorName);
+
+    // Si des réalisateurs correspondent au nom recherché
+    if (!empty($real)) {
+        foreach ($real as $r) {
+            // Ajouter les IDs des réalisateurs à $numReal
+            $numReal[] = $r->num_real;
+        }
+    } else {
+        // Si aucun réalisateur correspondant n'est trouvé, ajouter un ID invalide (-1) à $numReal
+        $numReal[] = -1;
     }
 }
-
 
 // Récupérer les films correspondants en utilisant les ID des acteurs et des réalisateurs
 $movies = $trie->getMoviesByDirectorIdGenreYear($numReal, $genre, $year, $seen, $actorIds);

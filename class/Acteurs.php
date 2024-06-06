@@ -135,6 +135,44 @@ class Acteurs extends PdoWrapper
         $params = ["actorName" => '%' . trim($actorName) . '%'];
         return $this->exec($req, $params, 'Acteur');
     }
+    public function updateImageByNumAct($idAct, $newImageName)
+    {
+        $req = "UPDATE acteur SET nom_img = :newImageName WHERE num_act = :idAct";
+        $params = ["newImageName" => $newImageName, "idAct" => $idAct];
+        $this->exec($req, $params);
+    }
+    public function getNomActeur($idAct)
+    {
+        $req = "SELECT nom_act FROM acteur WHERE num_act = :idAct";
+        $para = ["idAct" => $idAct];
+        $res = $this->exec($req, $para);
+        return isset($res[0]) ? $res[0]->nom_act : null;
+    }
+    public function getNomImagebyId($idAct)
+    {
+        $req = "SELECT nom_img FROM acteur WHERE num_act = :idAct";
+        $para = ["idAct" => $idAct];
+        $res = $this->exec($req, $para);
+        return isset($res[0]) ? $res[0]->nom_img : null;
+    }
+    public function updateActorName($idAct, $newActName)
+    {
+        $req = "UPDATE acteur SET nom_act = :newActName WHERE num_act = :idAct";
+        $para = ["newActName" => $newActName, "idAct" => $idAct];
+        $this->exec($req, $para);
+    }
+    public function existActor($nomActeur)
+{
+    $req = "SELECT COUNT(*) AS count FROM acteur WHERE nom_act = :nomActeur";
+    $params = ["nomActeur" => $nomActeur];
+    $result = $this->exec($req, $params);
+
+    if ($result[0]->count > 0) {
+        return true; // L'acteur existe
+    } else {
+        return false; // L'acteur n'existe pas
+    }
+}
     
 
 }
