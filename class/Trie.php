@@ -177,38 +177,39 @@ public function getMoviesByGenre($genre)
         $query = "SELECT DISTINCT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche, realisateur.num_real
             FROM Films
             INNER JOIN realisateur ON realisateur.num_real = Films.num_real
-            LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
-            LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
+            INNER JOIN film_tag ON Films.num_film = film_tag.num_film
+            INNER JOIN tags ON tags.num_tag = film_tag.num_tag
             WHERE 1=1";
     
         $params = [];
     
         if (!empty($directorIds)) {
-            $placeholders = implode(',', array_fill(0, count($directorIds), '?'));
-            $query .= " AND Films.num_real IN ($placeholders)";
-            $params = array_merge($params, $directorIds);
+            $placeholders = implode(',', array_fill(0, count($directorIds), '?'));//permet de passer les parametres dans la requete c a d bindvalue des num reals dans la requete,on attache l id des reals aux ?
+            $query .= " AND Films.num_real IN ($placeholders)";//on aura donc 'IN ?,?,?' pour sizeof(directorids)=3
+            $params = array_merge($params, $directorIds);//on combine les parametres dans le tableau,mettre le tab directorIds dans params
         }
     
         if (!empty($year)) {
-            $query .= " AND Films.anSortie_film = ?";
+            $query .= " AND Films.anSortie_film = ?";//on concatene avec la requete
             $params[] = $year;
         }
     
         if (!empty($genres)) {
             if (is_string($genres)) {
-                $genres = explode(',', $genres);
+                $genres = explode(',', $genres);//transforme la chaine contenant les genres separes par des vergules en un tableau 
                 $genres = array_map('trim', $genres); // Supprimer les espaces inutiles
             }
     
             $genreConditions = [];
-            foreach ($genres as $index => $genre) {
+            foreach ($genres as  $genre) {
                 $genreConditions[] = "Films.genre_film LIKE ?";
+
                 $params[] = '%' . $genre . '%';
             }
             $query .= " AND (" . implode(' AND ', $genreConditions) . ")";
         }
     
-        if ($seen !== '') {
+        if ($seen !== '') {//seen n est pas vide et est une chaine
             $query .= " AND Films.est_regarde = ?";
             $params[] = $seen ? 1 : 0;
         }
@@ -216,10 +217,10 @@ public function getMoviesByGenre($genre)
         if (!empty($actorIds)) {
             $actorConditions = [];
             foreach ($actorIds as $actorId) {
-                $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE jouer.num_film = Films.num_film AND jouer.num_act = ?)";
+                $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE jouer.num_film = Films.num_film AND jouer.num_act = ?)";//on selectionne l acteur qui a bien joue dans le film
                 $params[] = $actorId;
             }
-            $query .= " AND (" . implode(' AND ', $actorConditions) . ")";
+            $query .= " AND (" . implode(' AND ', $actorConditions) . ")";//on concatene les conditions d acteurs ayant joue dans le film avec la requete
         }
     
         return $this->exec($query, $params, "Film");
