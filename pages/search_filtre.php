@@ -85,6 +85,7 @@ if (!empty($movies)) {
             "num_real" => $movie->num_real,
             "nom_affiche" => $movie->nom_affiche,
         ];
+        $tempo= array();
     }
 }
 

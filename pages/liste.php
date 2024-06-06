@@ -27,7 +27,7 @@ $films = new Films();
                 <?php $film = $films->getFilmByNum($num); ?>
 
                 <div class="image-container">
-                    <a href="movies.php??nom_film=<?= $film->titre_film ?>" class="film-min">
+                    <a href="movies.php?nom_film=<?= $film->titre_film ?>" class="film-min">
                         <img src="../images/affiches/<?= htmlspecialchars($film->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>"
                             alt="<?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>">
                         <span><?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8') ?></span>
