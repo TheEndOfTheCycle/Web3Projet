@@ -83,10 +83,10 @@ $allFilms = $filmsClass->getAllFilms();
         // Sélectionnez toutes les icônes de corbeille avec la classe "c" et ajoutez un gestionnaire d'événements à chacune
         document.querySelectorAll('.c').forEach(icon => {
             icon.addEventListener('click', function () {
-                console.log("clic");
+               // console.log("clic");
                 // Obtenez l'identifiant unique de l'icône de corbeille
                 let id = this.id.replace('delete-icon-', '');
-                console.log(id);
+                //console.log(id);
                 // Appelez une fonction pour supprimer le film avec cet identifiant
                 deleteFilm(id);
             });
@@ -98,8 +98,8 @@ $allFilms = $filmsClass->getAllFilms();
         document.querySelectorAll('.watch-list-icon').forEach(icon => {
             icon.addEventListener('click', function () {
                 let id = this.id.replace('add-icon-', '');
-                console.log(id);
-                console.log("nemi")
+               // console.log(id);
+                //console.log("nemi")
                 // Appelez une fonction pour supprimer le film avec cet identifiant
                 addFilmToWatchlist(id);
             });

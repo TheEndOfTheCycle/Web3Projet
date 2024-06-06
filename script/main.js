@@ -142,7 +142,7 @@ function displaySearchResults(results) {
   let Tname;//nom complet
     if (results.length > 0) {//on parcourt les resultats
         results.forEach(result => {
-          console.log(result)
+          //console.log(result)
             let subContainer = document.createElement("a");
             subContainer.classList.add("sub-container-row");
             let resultItem = document.createElement("div");            

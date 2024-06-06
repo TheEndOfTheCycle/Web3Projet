@@ -58,13 +58,13 @@ class Trie extends PdoWrapper
         $Otags = new Tags();
         $Bacteurs = new Acteurs();
         $Breals = new Realisateurs();
-
+        //on utilise des left joins pour avoir des films meme si il y a une erreur ...
         $query = "SELECT DISTINCT * FROM Films
-              cross JOIN film_tag ON Films.num_film = film_tag.num_film
-              cross JOIN tags ON tags.num_tag = film_tag.num_tag
-              cross JOIN jouer ON jouer.num_film = Films.num_film
-              cross JOIN acteur ON acteur.num_act = jouer.num_act
-              cross JOIN realisateur ON realisateur.num_real = Films.num_real
+              Left JOIN film_tag ON Films.num_film = film_tag.num_film 
+              left JOIN tags ON tags.num_tag = film_tag.num_tag
+              left JOIN jouer ON jouer.num_film = Films.num_film
+              left JOIN acteur ON acteur.num_act = jouer.num_act
+              left JOIN realisateur ON realisateur.num_real = Films.num_real
               WHERE Films.titre_film LIKE :searchTerm
                  OR tags.nom_tag LIKE :searchTerm
                  OR acteur.nom_act LIKE :searchTerm

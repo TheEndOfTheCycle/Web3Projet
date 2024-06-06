@@ -71,10 +71,10 @@ $films = new Films();
         // Sélectionnez toutes les icônes de corbeille avec la classe "c" et ajoutez un gestionnaire d'événements à chacune
         document.querySelectorAll('.c').forEach(icon => {
             icon.addEventListener('click', function () {
-                console.log("clic");
+                //console.log("clic");
                 // Obtenez l'identifiant unique de l'icône de corbeille
                 let id = this.id.replace('delete-icon-', '');
-                console.log(id);
+                //console.log(id);
                 // Appelez une fonction pour supprimer le film avec cet identifiant
                 deleteFilm(id);
             });
@@ -85,7 +85,7 @@ $films = new Films();
         icon.addEventListener('click', function () {
             // Obtenez le numéro du film à partir de l'identifiant de l'icône
             let filmNum = this.id.split('-').pop();
-            console.log(filmNum);
+            //console.log(filmNum);
             // Appelez une fonction pour mettre à jour l'état du film avec ce numéro
             updateFilmStatus(filmNum);
         });
