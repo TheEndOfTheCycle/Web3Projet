@@ -25,7 +25,7 @@ if (!empty($actorName)) {
 
     foreach ($actors as $actor) {
         if (!empty($actor)) {
-            $actorResults = $acteur->searchActors($actor);
+            $actorResults = $trie->searchActor($actor);
             if (!empty($actorResults)) {
                 foreach ($actorResults as $actorObj) {
                     $trimmedName = trim($actorObj->nom_act);
@@ -51,7 +51,7 @@ if (!empty($actorName)) {
 // Récupérer les IDs des réalisateurs dont le nom contient la chaîne de caractères entrée
 if(!empty($directorName)){
     $realisateur = new Realisateurs();
-    $real = $realisateur->searchDirectors($directorName);
+    $real = $trie->searchReal($directorName);
 
     // Si des réalisateurs correspondent au nom recherché
     if (!empty($real)) {
