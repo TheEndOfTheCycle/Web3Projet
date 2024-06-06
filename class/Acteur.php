@@ -24,11 +24,7 @@ class Acteur extends PdoWrapper{
         $params = ['num_act' => $num];
         $results = $this->exec($req, $params, null);
     
-        foreach ($results as $res) {
-            $tabFilms[] = $res;
-        }
-    
-        return $tabFilms;
+        return $results;
     }
 
    

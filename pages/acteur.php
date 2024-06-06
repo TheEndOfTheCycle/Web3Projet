@@ -51,7 +51,7 @@ if (isset($_GET['nom_act'])) {
             </div>
         </div>
         <div class="film-categorie">
-            <span class="acteur-film">Films réalisés</span>
+            <span class="acteur-film">Films Joués</span>
             <div class="carousel-container">
                 <div class="carousel-arrow left-arrow">&#10094;</div>
                 <div class="films">

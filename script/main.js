@@ -139,7 +139,7 @@ function searchFilms(searchInput) {
 function displaySearchResults(results) {
     let searchResultsContainer = document.getElementById("search-results");
     searchResultsContainer.innerHTML = "";
-
+  let Tname;//nom complet
     if (results.length > 0) {//on parcourt les resultats
         results.forEach(result => {
           console.log(result)
@@ -163,18 +163,34 @@ function displaySearchResults(results) {
               }
               if(result.type=="Acteur")
               {
+                  if(result.estReal==1)
+                    {
+                      Tname=result.nom_act + " (Acteur)"
+                    }
+                    else
+                    {
+                      Tname=result.nom_act
+                    }
                 resultItem.innerHTML =
                 "<div>" +
-                result.nom_act +
+                Tname +
                 "</div>";
                 subContainer.href="acteur.php?nom_act=" +result.nom_act
                 imgResult.src = "../images/acteurs/" + result.img_act;
               }
               if(result.type=="Realisateur")
                 {
+                  if(result.estAct==1)
+                    {
+                      Tname=  result.nom_real +" (Realisateur)"
+                    }
+                    else
+                    {
+                      Tname = result.nom_real
+                    }
                   resultItem.innerHTML =
                   "<div>" +
-                  result.nom_real +
+                 Tname +
                   "</div>";
                   subContainer.href="realisateur.php?nom_real=" +result.nom_real
                   imgResult.src = "../images/realisateurs/" + result.img_act;

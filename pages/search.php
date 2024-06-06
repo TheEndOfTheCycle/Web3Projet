@@ -5,6 +5,8 @@ require "../class/Autoloader.php";
 Autoloader::register();
 $trie = new Trie();
 $Bacts = new Acteurs();
+$estAct=0;//permet de savoir si un real est un acteur
+$estReal=0;//permet de savoir si un acteur est un real
 function debug_to_console($data) {
     $output = $data;
     if (is_array($output))
@@ -45,7 +47,7 @@ if (isset($_GET['query'])  ) {
 
                     if($res->nom_act==$result->nom_act)
                     {
-                        $TnameAct =$TnameAct . " (Acteur)";
+                       $estReal=1;
                         break;
                     }
                    
@@ -54,7 +56,9 @@ if (isset($_GET['query'])  ) {
                     'nom_act' => htmlspecialchars($TnameAct, ENT_QUOTES, 'UTF-8'),
                     'type' => "Acteur",
                     'img_act' =>htmlspecialchars($result->nom_img, ENT_QUOTES, 'UTF-8'),
+                    'estReal' =>$estReal,
                 );
+                $estReal=0;
             }
             foreach($resultAllReal as $result)
             {
@@ -63,7 +67,7 @@ if (isset($_GET['query'])  ) {
                     $TrealName=$result->nom_real;
                     if($res->nom_real==$result->nom_real)
                     {
-                        $TrealName=$TrealName . " (Realisateur)";
+                       $estAct=1;
                         break;
                     }
                 }
@@ -71,8 +75,9 @@ if (isset($_GET['query'])  ) {
                     'nom_real' => htmlspecialchars($TrealName, ENT_QUOTES, 'UTF-8'),
                     'type' => "Realisateur",
                     'img_real' =>htmlspecialchars($result->nom_img, ENT_QUOTES, 'UTF-8'),
-                
+                    'estAct' =>$estAct,
                 );
+                $estAct=0;
             }
 
             // Renvoyer les résultats au format JSON
