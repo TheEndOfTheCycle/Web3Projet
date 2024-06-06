@@ -129,5 +129,13 @@ class Acteurs extends PdoWrapper
             rename($tempFile, $csvFile);
         }
     }
+    public function searchActors($actorName)
+    {
+        $req = "SELECT * FROM acteur WHERE nom_act LIKE :actorName";
+        $params = ["actorName" => '%' . trim($actorName) . '%'];
+        return $this->exec($req, $params, 'Acteur');
+    }
+    
+
 }
 

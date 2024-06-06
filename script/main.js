@@ -75,13 +75,14 @@ document.addEventListener("DOMContentLoaded", function () {
     let searchInput = document.getElementById("search-input");
     let searchResult = document.getElementById("search-results");
 
-
     if (computedStyle.display === "flex") {
-      searchForm.style.display = "none";
-      searchInput.value = "";
-      searchResult.innerHTML = "";
+        searchForm.style.display = "none";
+        searchInput.value = "";
+        searchResult.innerHTML = "";
+        closeFilter(); // Appel de la fonction closeFilter() pour fermer également le filtre
     }
-  }
+}
+
 
   function scrollLeft(films) {
     films.scrollBy({
@@ -97,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  let searchForm = document.querySelector(".search-form");
+let searchForm = document.querySelector(".search-form");
 let searchInput = document.getElementById("search-input");
 
 

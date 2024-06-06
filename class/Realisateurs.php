@@ -117,10 +117,30 @@ class Realisateurs extends PdoWrapper
     }
 
     public function updateImageByNumReal($numRealisateur, $newImageName)
-{
-    // Requête SQL pour mettre à jour le nom de l'image d'un réalisateur
-    $req = "UPDATE realisateur SET nom_img = :newImageName WHERE num_real = :numReal";
-    $params = ["newImageName" => $newImageName, "numReal" => $numRealisateur];
-    $this->exec($req, $params);
-}
+    {
+        // Requête SQL pour mettre à jour le nom de l'image d'un réalisateur
+        $req = "UPDATE realisateur SET nom_img = :newImageName WHERE num_real = :numReal";
+        $params = ["newImageName" => $newImageName, "numReal" => $numRealisateur];
+        $this->exec($req, $params);
+    }
+
+    public function realisateurExist($nomRealisateur)
+    {
+        $req = "SELECT COUNT(*) AS count FROM realisateur WHERE nom_real = :nomRealisateur";
+        $params = ["nomRealisateur" => $nomRealisateur];
+        $result = $this->exec($req, $params);
+
+        if ($result[0]->count > 0) {
+            return true; // Le réalisateur existe
+        } else {
+            return false; // Le réalisateur n'existe pas
+        }
+    }
+
+    public function searchDirectors($directorName)
+    {
+        $req = "SELECT * FROM realisateur WHERE nom_real LIKE :directorName";
+        $params = ["directorName" => '%' . trim($directorName) . '%'];
+        return $this->exec($req, $params, 'Realisateur');
+    }
 }

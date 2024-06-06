@@ -17,7 +17,19 @@ class Film extends PdoWrapper
         $req = "select nom_real, nom_img from realisateur inner join Films where Films.num_real = realisateur.num_real and Films.num_real = " . $this->num_real;
         return $this->exec($req, null, "Realisateur");
     }
-
+    
+    public function existeFilm($titre)
+    {
+        $req = "SELECT COUNT(*) AS count FROM Films WHERE titre_film = :titre";
+        $params = ['titre' => $titre];
+        $result = $this->exec($req, $params);
+    
+        if ($result && $result[0]->count > 0) {
+            return true; // Le film existe
+        } else {
+            return false; // Le film n'existe pas
+        }
+    }
     public function getNomReal()
     {
         return $this->getReal()[0]->nom_real;

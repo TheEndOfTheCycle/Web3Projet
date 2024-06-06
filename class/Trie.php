@@ -75,6 +75,48 @@ class Trie extends PdoWrapper
         return $this->exec($query, $params, "Film");
     }
 
+    public function getMoviesByYearAndGenre($year, $genre)
+{
+    $query = "SELECT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+              FROM Films
+              WHERE 1=1"; // Condition toujours vraie pour pouvoir ajouter des clauses WHERE supplémentaires
+
+    $params = array();
+
+    if (!is_null($year)) {
+        $query .= " AND Films.anSortie_film = :year";
+        $params[':year'] = $year;
+    }
+
+    if (!is_null($genre)) {
+        $query .= " AND Films.genre_film LIKE :genre";
+        $params[':genre'] = '%' . $genre . '%';
+    }
+
+    return $this->exec($query, $params, "Film");
+}
+
+public function getMoviesByYear($year)
+{
+    $query = "SELECT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+              FROM Films
+              WHERE Films.anSortie_film = :year";
+
+    $params = array(':year' => $year);
+
+    return $this->exec($query, $params, "Film");
+}
+
+public function getMoviesByGenre($genre)
+{
+    $query = "SELECT Films.titre_film, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+              FROM Films
+              WHERE Films.genre_film LIKE :genre";
+
+    $params = array(':genre' => '%' . $genre . '%');
+
+    return $this->exec($query, $params, "Film");
+}
 
 
     public function getMoviesByTagsNames($Tnametags)//cette fonction retourne les Films qui ont les tags contenu dans Ttags
@@ -115,19 +157,67 @@ class Trie extends PdoWrapper
         $para = ["numR" => $num_real, "numT" => $num_tag];
         return $this->exec($req, $para);
     }
-    public function getMoviesByActorNameAndRealName($nom_act, $nom_real)//cette fonction retourne la liste des Films diriges par ce real et ayant le tag correspondant
-    {
-        $Bacts = new Acteurs();
-        $Breals = new Realisateurs();
-        $num_real = $Breals->getNumReal($nom_real);
-        $num_act = $Bacts->getNumAct($nom_act);
-        $req = "select * from Films inner join realisateur on realisateur.num_real=Films.num_real inner join jouer on jouer.num_film=Films.num_film inner join acteur on acteur.num_act=jouer.num_act where acteur.num_act=:numA and realisateur.num_real=:numR";
-        $para = [
-            "numR" => $num_real
-            ,
-            "numA" => $num_act
-        ];
-        return $this->exec($req, $para);
+
+
+// Nouvelle méthode pour récupérer les films par réalisateur, genre et année// Nouvelle méthode pour récupérer les films par réalisateur, genre et année
+// Nouvelle méthode pour récupérer les films par réalisateur, genre et année
+public function getMoviesByDirectorIdGenreYear($directorId, $genre, $year, $seen, $actorIds)
+{
+    $query = "SELECT DISTINCT Films.titre_film, realisateur.num_real, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+        FROM Films
+        INNER JOIN realisateur ON realisateur.num_real = Films.num_real
+        INNER JOIN film_tag ON Films.num_film = film_tag.num_film
+        INNER JOIN tags ON tags.num_tag = film_tag.num_tag
+        WHERE 1=1";
+
+    $params = [];
+
+    if ($directorId !== -1) {
+        if (!empty($directorId)) {
+            $query .= " AND Films.num_real = :directorId";
+            $params[':directorId'] = $directorId;
+        }
+    } else {
+        // Si $directorId est égal à -1, ne récupérer aucun film
+        $query .= " AND 1=0";
     }
+
+    if (!empty($genre)) {
+        $query .= " AND Films.genre_film LIKE :genre";
+        $params[':genre'] = '%' . $genre . '%';
+    }
+
+    if (!empty($year)) {
+        $query .= " AND Films.anSortie_film = :year";
+        $params[':year'] = $year;
+    }
+
+    if (!empty($seen)) {
+        $query .= " AND Films.est_regarde = :seen";
+        $params[':seen'] = $seen ? 1 : 0;
+    }
+
+    if (!empty($actorIds)) {
+        $actorConditions = [];
+        foreach ($actorIds as $index => $actorId) {
+            $placeholder = ":actorId$index";
+            $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE num_film = Films.num_film AND num_act = $placeholder)";
+            $params[$placeholder] = $actorId;
+        }
+
+        $actorConditionStr = implode(' AND ', $actorConditions);
+        $query .= " AND $actorConditionStr";
+    }
+
+    // Si tous les paramètres sont vides, récupérer tous les films
+    if (empty($directorId) && empty($genre) && empty($year) && empty($seen) && empty($actorIds)) {
+        $query = "SELECT DISTINCT Films.titre_film, realisateur.num_real, Films.anSortie_film, Films.genre_film, Films.nom_affiche
+            FROM Films
+            INNER JOIN realisateur ON realisateur.num_real = Films.num_real";
+    }
+
+    return $this->exec($query, $params, "Film");
 }
 
+
+}
