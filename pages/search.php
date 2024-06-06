@@ -27,21 +27,26 @@ if (isset($_GET['query'])  ) {
         $resultAll = $trie->searchMovies($query);//on cherche les films
         $resultAllActs =$trie->searchActor($query);//on cherche les acteurs
         $resultAllReal =$trie->searchReal($query);//on cherche les reals
-        $tempo;
+        $tempo= array();
         // Vérifier si des résultats ont été trouvés
         if ($resultAll !== false && !empty($resultAll)) {
             // Convertir les résultats en un tableau associatif approprié pour le JSON
             $jsonResults = array();
             foreach ($resultAll as $result) {
-              
+                foreach($result->getTags() as $tag)
+                {
+                  $tempo []=  $tag->nom_tag . " ";
+                }
                
                 $jsonResults[] = array(
                     'titre_film' => htmlspecialchars($result->titre_film, ENT_QUOTES, 'UTF-8'),
                     'img_film' => htmlspecialchars($result->nom_affiche, ENT_QUOTES, 'UTF-8'),
                     'anSortie_film' => htmlspecialchars($result->anSortie_film, ENT_QUOTES, 'UTF-8'),
-                    'genre' => htmlspecialchars($result->genre_film, ENT_QUOTES, 'UTF-8'), // Il serait préférable de rendre ce champ dynamique
+                    'genre' => htmlspecialchars(implode(" ",$tempo), ENT_QUOTES, 'UTF-8'), // Il serait préférable de rendre ce champ dynamique
                     'type' =>"Film",
                 );
+                $tempo = array();
+                
             }
             foreach ($resultAllActs as $result) {
                 foreach($Bacts->acteurEstreal() as $res)

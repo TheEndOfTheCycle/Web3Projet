@@ -71,12 +71,17 @@ $movies = $trie->getMoviesByDirectorIdGenreYear($numReal, $genre, $year, $seen, 
 
 // Préparer les résultats pour le retour JSON
 $results = [];
+$tempo=array();
 if (!empty($movies)) {
     foreach ($movies as $movie) {
+        foreach($movie->getTags() as $tag)
+        {
+            $tempo []=  $tag->nom_tag . " ";
+        }
         $results[] = [
             "titre_film" => $movie->titre_film,
             "anSortie_film" => $movie->anSortie_film,
-            "genre_film" => $movie->genre_film,
+            "genre_film" => htmlspecialchars(implode(" ",$tempo), ENT_QUOTES, 'UTF-8'),
             "num_real" => $movie->num_real,
             "nom_affiche" => $movie->nom_affiche,
         ];
