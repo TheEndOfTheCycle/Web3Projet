@@ -59,50 +59,59 @@ if (isset($_GET['nom_film'])) {
             </div>
         </div>
         <form class="search-form">
-            <div class="searche-bar">
-                <div class="searche-bar-1">
-
-                    <button type="submit" class="search-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-search" viewBox="0 0 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                        </svg>
-                    </button>
-                    <input type="text" id="search-input" placeholder="Rechercher...">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
-                        class="bi bi-x-circle" viewBox="0 0 16 16">
-                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                        <path
-                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                    </svg>
-                </div>
-                <div id="search-results"></div>
-            </div>
-
-
-        </form>
-
-        <form class="filter-form" method="get" style="display:none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x-circle-filter"
+        <div id="filter-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel"
                 viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                 <path
-                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z" />
             </svg>
-            <div class="filter-bar">
-                <input type="text" id="year-input" name="year" placeholder="Année" class="filtre-input">
-                <input type="text" id="genre-input" name="genre" placeholder="Genre" class="filtre-input">
-                <input type="text" id="realisateur-input" name="realisateur" placeholder="Réalisateur" class="filtre-input">
-                <input type="text" id="acteur-input" name="acteur" placeholder="Acteur" class="filtre-input">
-                <div class="checkbox-container">
-                    <label for="seen-checkbox" class="vu">Vu</label>
-                    <input type="checkbox" id="seen-checkbox" name="seen" class="input-check">
-                </div>
-            </div>
+        </div>
+        <div class="searche-bar">
 
-            <div id="filter-results"></div>
-        </form>
+            <div class="searche-bar-1">
+
+                <button type="submit" class="search-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                    </svg>
+                </button>
+                <input type="text" id="search-input" placeholder="Rechercher...">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                    class="bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                    <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                </svg>
+            </div>
+            <div id="search-results"></div>
+        </div>
+
+
+
+    </form>
+
+    <form class="filter-form" method="get" style="display:none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x-circle-filter"
+            viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+            <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+        </svg>
+        <div class="filter-bar">
+            <input type="text" id="year-input" name="year" placeholder="Année" class="filtre-input">
+            <input type="text" id="genre-input" name="genre" placeholder="Genre" class="filtre-input">
+            <input type="text" id="realisateur-input" name="realisateur" placeholder="Réalisateur" class="filtre-input">
+            <input type="text" id="acteur-input" name="acteur" placeholder="Acteur" class="filtre-input">
+            <div class="checkbox-container">
+                <label for="seen-checkbox" class="vu">Vu</label>
+                <input type="checkbox" id="seen-checkbox" name="seen" class="input-check">
+            </div>
+        </div>
+
+        <div id="filter-results"></div>
+    </form>
         
     </header>
 
