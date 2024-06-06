@@ -74,7 +74,7 @@ ob_start();
 
             <div class="cat1">
                 <?php if ($acteur->nom_img != null): ?>
-                    <a href="acteur.php?nom_act=<?= urlencode($acteur->nom_act) ?>">
+                    <a class="titreSousImage"href="acteur.php?nom_act=<?= urlencode($acteur->nom_act) ?>">
                         <!-- Utiliser le chemin approprié pour l'image du réalisateur -->
                         <img src="../images/acteurs/<?= $acteur->nom_img ?>" alt="<?= $acteur->nom_act ?>">
                         <span><?= $acteur->nom_act ?></span>

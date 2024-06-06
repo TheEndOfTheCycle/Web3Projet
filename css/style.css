@@ -628,6 +628,15 @@ nav ul li a:hover::after {
   margin-top: 5px;
 }
 
+.titreSousImage{
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  flex-direction: column;
+}
+
 .hr-acteurs {
   height: 1px;
   background-color: #645d5d;

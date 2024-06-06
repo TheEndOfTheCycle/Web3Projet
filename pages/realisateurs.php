@@ -58,10 +58,9 @@ ob_start();
             ?>
             <div class="cat1">
                 <?php if ($realisateur->nom_img != null): ?>
-                    <a href="realisateur.php?nom_real=<?= urlencode($realisateur->nom_real) ?>">
+                    <a class="titreSousImage" href="realisateur.php?nom_real=<?= urlencode($realisateur->nom_real) ?>">
                         <img src="../images/realisateurs/<?= $realisateur->nom_img ?>" alt="<?= $realisateur->nom_real ?>">
                         <span><?= $realisateur->nom_real ?></span>
-
                     </a>
                     <?php if (isset($_SESSION['username'])): ?>
                         <!-- Ajoutez un identifiant unique à chaque icône de corbeille, par exemple, "delete-icon-ID" -->
