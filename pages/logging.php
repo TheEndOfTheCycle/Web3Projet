@@ -8,10 +8,8 @@ require_once "../config.php";
 require_once "../class/Autoloader.php";
 Autoloader::register();
 
-// Démarre ou restaure une session si nécessaire
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
+
 
 $logger = new Logger();
 

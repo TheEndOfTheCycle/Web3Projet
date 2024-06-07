@@ -26,7 +26,7 @@ $films = new Films();
             <?php foreach ($numFilms as $num): ?>
                 <?php $film = $films->getFilmByNum($num); ?>
 
-                <div class="image-container">
+                <div class="image-container <?= $film->est_regarde == 1 ? 'filtre' : '' ?>" id="image-container-<?= $film->num_film ?>">
                     <a href="movies.php??nom_film=<?= $film->titre_film ?>" class="film-min">
                         <img src="../images/affiches/<?= htmlspecialchars($film->nom_affiche, ENT_QUOTES, 'UTF-8'); ?>"
                             alt="<?= htmlspecialchars($film->titre_film, ENT_QUOTES, 'UTF-8'); ?>">
@@ -83,6 +83,7 @@ $films = new Films();
 
     document.querySelectorAll('.watch-list-icon').forEach(icon => {
         icon.addEventListener('click', function () {
+            
             // Obtenez le numéro du film à partir de l'identifiant de l'icône
             let filmNum = this.id.split('-').pop();
             console.log(filmNum);
