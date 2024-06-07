@@ -26,7 +26,7 @@ class Watchlists extends PdoWrapper
 
         // On vérifie que $res est bien un tableau et qu'il contient des résultats
         if (is_array($res) && count($res) > 0) {
-            return $res[0]->count > 0;
+            return $res[0]->count > 0;//on verifie si le nb de films est sup a zero
         }
 
         // En cas de problème, on retourne false par défaut

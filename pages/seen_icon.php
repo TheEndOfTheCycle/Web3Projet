@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
     $existingFilm = $filmsClass->getFilmByNum($filmNum);
     $title = $existingFilm->titre_film;
 
-    if ($filmsClass->filmExists($title)) {
+    if ($filmsClass->filmExists($title)) {//on vérifie que le film est bien existant dans la bde
         $etat = $existingFilm->est_regarde; // Assurez-vous de récupérer la propriété correctement
 
         // Inversez l'état du film

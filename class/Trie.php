@@ -214,10 +214,10 @@ public function getMoviesByGenre($genre)
     if (!empty($actorIds)) {
         $actorConditions = [];
         foreach ($actorIds as $actorId) {
-            $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE jouer.num_film = Films.num_film AND jouer.num_act = ?)";
+            $actorConditions[] = "EXISTS (SELECT 1 FROM jouer WHERE jouer.num_film = Films.num_film AND jouer.num_act = ?)";//on  vérifie que l acteur a bien joue dans la bd
             $params[] = $actorId;
         }
-        $query .= " AND (" . implode(' AND ', $actorConditions) . ")";
+        $query .= " AND (" . implode(' AND ', $actorConditions) . ")";//on concatene les conditions a la requete on obtient (Exists (select 1 from ...) and EXISTS (select 1)) autant de fois que sizeof(actorConditions)
     }
     $query .= " GROUP BY titre_film";
     return $this->exec($query, $params, "Film");
