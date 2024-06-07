@@ -12,12 +12,6 @@ $isAuthenticated = isset($_SESSION['email']);
 ob_start();
 ?>
 
-<?php if ($isAuthenticated): ?>
-    <!-- Afficher l'email de l'utilisateur si authentifié -->
-    <div class="user-info">
-        <p>Connecté en tant que : <?php echo htmlspecialchars($_SESSION['email']); ?></p>
-    </div>-
-<?php endif; ?>
 <div class="main-container">
     <div class="container">
         <div class="container-text">
@@ -34,9 +28,9 @@ ob_start();
                 <img src="../images/stream.jpg">
             </div>
             <div class="help-col-2">
-                <h1 class="sub-title">Regardez Netflix sur votre TV </h1>
+                <h1 class="sub-title">Regardez CineCollection sur votre TV </h1>
                 <p>
-                    Regardez Netflix sur votre Smart TV, PlayStation, Xbox, Chromecast, Apple TV, lecteur Blu-ray et
+                    Regardez CineCollection sur votre Smart TV, PlayStation, Xbox, Chromecast, Apple TV, lecteur Blu-ray et
                     bien plus
                 </p>
             </div>
@@ -48,9 +42,9 @@ ob_start();
     <div class="help">
         <div class="row">
             <div class="help-col-2">
-                <h1 class="sub-title">Regardez Netflix sur votre TV </h1>
+                <h1 class="sub-title">Regardez CineCollection sur votre TV </h1>
                 <p>
-                    Regardez Netflix sur votre Smart TV, PlayStation, Xbox, Chromecast, Apple TV, lecteur Blu-ray et
+                    Regardez CineCollection sur votre Smart TV, PlayStation, Xbox, Chromecast, Apple TV, lecteur Blu-ray et
                     bien plus
                 </p>
             </div>

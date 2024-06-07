@@ -58,20 +58,21 @@ class Trie extends PdoWrapper
         $Otags = new Tags();
         $Bacteurs = new Acteurs();
         $Breals = new Realisateurs();
-
-        $query = "SELECT DISTINCT * FROM Films
-              LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
-              LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
-              LEFT JOIN jouer ON jouer.num_film = Films.num_film
-              LEFT JOIN acteur ON acteur.num_act = jouer.num_act
-              LEFT JOIN realisateur ON realisateur.num_real = Films.num_real
-              WHERE Films.titre_film LIKE :searchTerm
-                 OR tags.nom_tag LIKE :searchTerm
-                 OR acteur.nom_act LIKE :searchTerm
-                 OR realisateur.nom_real LIKE :searchTerm";
-
+    
+        $query = "SELECT DISTINCT Films.* FROM Films
+                  LEFT JOIN film_tag ON Films.num_film = film_tag.num_film
+                  LEFT JOIN tags ON tags.num_tag = film_tag.num_tag
+                  LEFT JOIN jouer ON jouer.num_film = Films.num_film
+                  LEFT JOIN acteur ON acteur.num_act = jouer.num_act
+                  LEFT JOIN realisateur ON realisateur.num_real = Films.num_real
+                  WHERE Films.titre_film LIKE :searchTerm
+                     OR tags.nom_tag LIKE :searchTerm
+                     OR acteur.nom_act LIKE :searchTerm
+                     OR realisateur.nom_real LIKE :searchTerm
+                  GROUP BY Films.num_film";
+    
         $params = array(':searchTerm' => '%' . $searchTerm . '%');
-
+    
         return $this->exec($query, $params, "Film");
     }
 

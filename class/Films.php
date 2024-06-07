@@ -182,32 +182,47 @@ class Films extends PdoWrapper
     }
 
     public function updateFilmTag($numFilm, $tagsArray)
-    {
-        $Otags = new Tags();
+{
+    $Otags = new Tags();
 
-        // Supprimer tous les tags associés au film
-        $req = "DELETE FROM film_tag WHERE num_film = :numFilm";
-        $params = ["numFilm" => $numFilm];
-        $this->exec($req, $params);
+    // Supprimer tous les tags associés au film
+    $req = "DELETE FROM film_tag WHERE num_film = :numFilm";
+    $params = ["numFilm" => $numFilm];
+    $this->exec($req, $params);
 
-        // Ajouter les nouveaux tags
-        foreach ($tagsArray as $tag) {
-            $tag = trim($tag); // Supprimer les espaces autour du tag
+    // Récupérer les tags actuels de la table Films
+    $currentTags = $this->getTagsById($numFilm);
 
-            // Vérifiez si le tag existe, sinon, ajoutez-le
-            if (!$Otags->tagExists($tag)) {
-                $Otags->add_tag_to_db($tag);
-            }
+    // Créer un tableau avec les nouveaux tags
+    $newTags = [];
 
-            // Récupérez le numéro du tag
-            $numTag = $Otags->getNumTag($tag);
+    // Ajouter les nouveaux tags
+    foreach ($tagsArray as $tag) {
+        $tag = trim($tag); // Supprimer les espaces autour du tag
 
-            // Ajouter le tag au film dans la table film_tag
-            $req = "INSERT INTO film_tag (num_film, num_tag) VALUES(:numFilm, :numTag)";
-            $para = ["numFilm" => $numFilm, "numTag" => $numTag];
-            $this->exec($req, $para);
+        // Vérifiez si le tag existe, sinon, ajoutez-le
+        if (!$Otags->tagExists($tag)) {
+            $Otags->add_tag_to_db($tag);
         }
+
+        // Récupérez le numéro du tag
+        $numTag = $Otags->getNumTag($tag);
+
+        // Ajouter le tag au film dans la table film_tag
+        $req = "INSERT INTO film_tag (num_film, num_tag) VALUES(:numFilm, :numTag)";
+        $para = ["numFilm" => $numFilm, "numTag" => $numTag];
+        $this->exec($req, $para);
+
+        // Ajouter le tag à la liste des nouveaux tags
+        $newTags[] = $tag;
     }
+
+    // Mettre à jour la colonne genre_film dans la table Films
+    $newGenres = implode(', ', array_unique(array_merge($currentTags, $newTags)));
+    $req = "UPDATE Films SET genre_film = :newGenres WHERE num_film = :numFilm";
+    $params = ["newGenres" => $newGenres, "numFilm" => $numFilm];
+    $this->exec($req, $params);
+}
     public function getFilmTitleByNumReal($numRealisateur)
     {
         // Requête SQL pour récupérer le titre d'un film associé à un numéro de réalisateur
