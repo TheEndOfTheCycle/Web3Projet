@@ -8,7 +8,7 @@ session_start();
 $watchlistClass = new Watchlists();
 
 // Récupérer les numéros de films de la watchlist
-$numFilms = $watchlistClass->getAllFilmsNums(); // Assuming you have a method like this in your Watchlists class
+$numFilms = $watchlistClass->getAllFilmsNums(); 
 $films = new Films();
 
 ?>

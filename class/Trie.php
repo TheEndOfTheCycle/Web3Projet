@@ -144,10 +144,8 @@ public function getMoviesByGenre($genre)
             $req = $req . " and where tags.num_tag=:" . $nomTag;
             $para[$i] = strval($nomTag);
         }
-        echo $req;
-        var_dump($para);
-        $res = $this->exec($req, $para);
-        var_dump($res);
+          return $this->exec($req, $para);
+       
 
     }
     public function getMoviesByTagNameAndActName($nom_act, $nom_tag)//cette fonction retourne la liste des Films ou l acteur figure et le film a le tag correspondant
@@ -184,8 +182,8 @@ public function getMoviesByGenre($genre)
     $params = [];
 
     if (!empty($directorIds)) {
-        $placeholders = implode(',', array_fill(0, count($directorIds), '?'));
-        $query .= " AND Films.num_real IN ($placeholders)";
+        $placeholders = implode(',', array_fill(0, count($directorIds), '?'));//on cree un tableau de taille sizeof(directorIds) qui va nous servir a bindvalues
+        $query .= " AND Films.num_real IN ($placeholders)";//on concatene pour obtenir IN(?,?,?) pour sizeof(directorIds)=3
         $params = array_merge($params, $directorIds);
     }
 
@@ -196,16 +194,16 @@ public function getMoviesByGenre($genre)
 
     if (!empty($genres)) {
         if (is_string($genres)) {
-            $genres = explode(',', $genres);
+            $genres = explode(',', $genres);//on transforme la chaine de tags en un tableau de genres
             $genres = array_map('trim', $genres);
         }
 
         $genreConditions = [];
         foreach ($genres as $genre) {
-            $genreConditions[] = "tags.nom_tag LIKE ?";
+            $genreConditions[] = "tags.nom_tag LIKE ?";//ce tableau va nous permettre de concatener la requete,et de chercher selon plusieurs tags
             $params[] = '%' . $genre . '%';
         }
-        $query .= " AND (" . implode(' OR ', $genreConditions) . ")";
+        $query .= " AND (" . implode(' OR ', $genreConditions) . ")";//on concatene la requete avec les restrictions des tags on obtient donc(tags.nom_tag Like :genre or tags.nom_tag Like :genre ...) autant de fois que sizeof(genres)
     }
 
     if ($seen !== '') {
