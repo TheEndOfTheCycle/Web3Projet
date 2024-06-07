@@ -29,6 +29,7 @@ if (isset($_GET['nom_real'])) {
         <?php if ($num_acteur && isset($realisateurDetails)): ?>
             <div class="infoMovie1">
                 <div class="infoMovie2">
+                <div class="image-acteur">
                     <h1>
                         <?= htmlspecialchars($realisateurDetails->nom_real, ENT_QUOTES, 'UTF-8') ; ?>
                         <?php if (isset($_SESSION['username'])): ?>
@@ -51,6 +52,7 @@ if (isset($_GET['nom_real'])) {
                             </svg>
                         </a>
                     <?php endif; ?>
+                </div>
                 </div>
             </div>
             <div class="film-categorie">

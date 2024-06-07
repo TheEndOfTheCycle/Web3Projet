@@ -26,6 +26,7 @@ if (isset($_GET['nom_act'])) {
     <?php if (isset($acteurDetails) && $acteurDetails): ?>
         <div class="infoMovie1">
             <div class="infoMovie2">
+            <div class="image-acteur">
                 <h1>
                     <?= htmlspecialchars($acteurDetails->nom_act, ENT_QUOTES, 'UTF-8'); ?>
                     <?php if (isset($_SESSION['username'])): ?>
@@ -38,6 +39,9 @@ if (isset($_GET['nom_act'])) {
                             </a>
                     <?php endif; ?>
                 </h1>
+                
+
+                
                 <img src="<?= "../images/acteurs/" . htmlspecialchars($acteurDetails->nom_img, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars($acteurDetails->nom_act, ENT_QUOTES, 'UTF-8'); ?>">
                 <?php if (isset($_SESSION['username'])): ?>
                     <a href="modif.php?imageAct=<?= urlencode($acteurDetails->num_act) ?>" class="stylo">
@@ -48,10 +52,11 @@ if (isset($_GET['nom_act'])) {
                         </svg>
                     </a>
                 <?php endif; ?>
+                </div>
             </div>
         </div>
         <div class="film-categorie">
-            <span class="acteur-film">Films réalisés</span>
+            <span class="acteur-film">Films jouer</span>
             <div class="carousel-container">
                 <div class="carousel-arrow left-arrow">&#10094;</div>
                 <div class="films">

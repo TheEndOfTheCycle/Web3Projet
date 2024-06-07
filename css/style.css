@@ -1133,9 +1133,21 @@ nav ul li a:hover::after {
     height: 100%;
     border-radius: 15px;
     transition: background-color 0.3s ease;
-    background-color: rgba(0, 0, 0, 0.5); /* Quand on survole l'image, l'overlay devient visible */
+    background-color: rgba(0, 0, 0, 0.5); 
   }
   
+  .image-acteur{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .image-acteur img{
+    width: 200px;
+    border-radius: 10px;
+  }
 
 /*------- small screens -----*/
 nav .fa-solid {
